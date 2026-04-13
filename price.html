@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Price List — Spin & Sparkle Laundromat</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep: #0D47A1;
+    --blue-mid: #1565C0;
+    --blue-bright: #1E88E5;
+    --blue-light: #BBDEFB;
+    --blue-pale: #E3F2FD;
+    --gold: #FFB300;
+    --white: #ffffff;
+    --black: #000000;
+    --orange: #FF8C00;
+    --text-dark: #0A1628;
+    --text-muted: #546E7A;
+    --nav-h: 70px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--white); overflow-x: hidden; }
+
+  /* ========== SPLASH SCREEN (PRELOADER ANIMATION) ========== */
+  .splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0D47A1 0%, #0a3b8a 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  
+  .splash-logo {
+    animation: splashZoomIn 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+  }
+  
+  .splash-logo img {
+    width: 350px;
+    height: auto;
+    max-width: 70vw;
+    filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
+    animation: logoGlow 1.5s ease-in-out infinite alternate;
+  }
+  
+  @keyframes splashZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) rotate(-10deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05) rotate(2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0);
+    }
+  }
+  
+  @keyframes logoGlow {
+    0% {
+      filter: drop-shadow(0 5px 15px rgba(255,179,0,0.3));
+    }
+    100% {
+      filter: drop-shadow(0 15px 35px rgba(255,179,0,0.6));
+    }
+  }
+  
+  .splash-text {
+    margin-top: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  
+  .splash-dots {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+  
+  .splash-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: dotPulse 1.2s ease infinite;
+  }
+  
+  .splash-dots span:nth-child(1) { animation-delay: 0s; }
+  .splash-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes dotPulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .splash-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .main-content {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .main-content.reveal {
+    opacity: 1;
+  }
+
+  /* ========== NAVIGATION - WITH LOGO IMAGE & WHITE BACKGROUND ========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    background: var(--white);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    transition: background 0.3s;
+  }
+  .nav-logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .nav-logo:hover {
+    transform: scale(1.02);
+  }
+  
+  .nav-logo-img {
+    height: 48px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+    transition: all 0.2s ease;
+  }
+  
+  .nav-logo-text, .nav-logo-icon {
+    display: none;
+  }
+  
+  .nav-links { display: flex; gap: 8px; list-style: none; }
+  .nav-links a {
+    color: var(--black);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .nav-links a:hover {
+    color: var(--orange);
+    background: rgba(0,0,0,0.05);
+  }
+  .nav-links a:hover::after {
+    width: 60%;
+  }
+  .nav-links a.active {
+    color: var(--orange);
+  }
+  .nav-links a.active::after {
+    width: 60%;
+    background: var(--orange);
+  }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 9px 22px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(255,179,0,0.3);
+  }
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+  }
+
+  /* ========== PAGE HERO ========== */
+  .page-hero {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #0a3b8a 100%);
+    padding: calc(var(--nav-h) + 3rem) 3rem 3rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    animation: floatGlow 16s ease-in-out infinite;
+  }
+  .page-hero::after {
+    content: ''; position: absolute; bottom: -80px; left: -80px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: rgba(255,179,0,0.05);
+    animation: floatGlow 20s ease-in-out infinite reverse;
+  }
+  @keyframes floatGlow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, 15px) scale(1.05); }
+  }
+  .section-tag {
+    display: inline-block; background: rgba(255,179,0,0.15); border: 1px solid rgba(255,179,0,0.3);
+    color: var(--gold); font-size: 12px; font-weight: 500; padding: 5px 14px;
+    border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;
+    backdrop-filter: blur(4px);
+  }
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900; color: var(--white); margin-bottom: 1rem;
+    animation: fadeDown 0.7s ease both;
+  }
+  .page-hero p {
+    color: var(--blue-light); font-size: 16px; max-width: 550px; margin: 0 auto;
+    animation: fadeDown 0.7s 0.15s ease both;
+  }
+  .page-hero-wave { line-height: 0; margin-top: 2rem; }
+  .page-hero-wave svg { display: block; }
+
+  /* ========== PRICE LIST MAIN CONTENT ========== */
+  .price-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+  }
+
+  .price-section {
+    margin-bottom: 3rem;
+  }
+  .price-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--blue-deep);
+    border-left: 5px solid var(--gold);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+
+  .price-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--blue-light);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .price-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .price-card:hover {
+    transform: translateX(5px);
+    border-color: var(--gold);
+    box-shadow: 0 8px 20px rgba(21,101,192,0.08);
+  }
+
+  .price-item-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: -0.2px;
+  }
+
+  .price-amount {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--blue-deep);
+    background: var(--blue-pale);
+    padding: 0.3rem 0.9rem;
+    border-radius: 40px;
+    transition: all 0.2s;
+  }
+  .price-card:hover .price-amount {
+    background: var(--gold);
+    color: var(--blue-deep);
+    transform: scale(1.02);
+  }
+
+  .package-card {
+    background: linear-gradient(145deg, var(--blue-pale), var(--white));
+    border-left: 4px solid var(--gold);
+  }
+  .package-card .price-amount {
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-size: 1.3rem;
+  }
+
+  .price-note {
+    background: var(--blue-pale);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    margin-top: 3rem;
+    text-align: center;
+    border: 1px solid var(--blue-light);
+  }
+  .price-note p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .price-note strong {
+    color: var(--blue-deep);
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .btn-small {
+    background: var(--blue-mid);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .btn-small:hover {
+    background: var(--gold);
+    color: var(--blue-deep);
+    transform: translateY(-2px);
+  }
+  .btn-small-outline {
+    background: transparent;
+    border: 1.5px solid var(--blue-mid);
+    color: var(--blue-mid);
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .btn-small-outline:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--blue-deep);
+    transform: translateY(-2px);
+  }
+
+  footer {
+    background: var(--text-dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 13px;
+    margin-top: 2rem;
+  }
+  footer a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-logo-img { height: 42px; max-width: 140px; }
+    .nav-links { gap: 4px; }
+    .nav-links a { padding: 6px 10px; font-size: 12px; }
+    .nav-cta { padding: 6px 14px; font-size: 12px; }
+    .page-hero { padding: calc(var(--nav-h) + 2rem) 1.5rem 2rem; }
+    .price-container { padding: 2rem 1.5rem; }
+    .price-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .splash-logo img { width: 140px; }
+    .splash-text { font-size: 1.2rem; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: flex !important; gap: 4px; }
+    .nav-links a { padding: 5px 8px; font-size: 11px; }
+    nav { padding: 0 0.8rem; }
+    .nav-logo-img { height: 38px; max-width: 130px; }
+    .nav-cta { padding: 5px 12px; font-size: 11px; }
+
+    .page-hero { padding: calc(var(--nav-h) + 1.5rem) 1rem 1.8rem; }
+    .page-hero h1 { font-size: 1.8rem; }
+    .page-hero p { font-size: 14px; }
+
+    .price-container { padding: 1.5rem 1rem; }
+    .price-section h2 { font-size: 1.4rem; }
+    .price-card { padding: 0.8rem 1rem; }
+    .price-item-name { font-size: 0.85rem; }
+    .price-amount { font-size: 1rem; padding: 0.2rem 0.7rem; }
+    .price-note { padding: 1rem; }
+    .cta-buttons { gap: 0.6rem; }
+    .btn-small, .btn-small-outline { padding: 0.5rem 1rem; font-size: 0.75rem; }
+    .splash-logo img { width: 120px; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links a { padding: 4px 5px; font-size: 9px; }
+    .nav-cta { font-size: 9px; padding: 4px 10px; }
+    .nav-logo-img { height: 34px; max-width: 120px; }
+    .price-grid { grid-template-columns: 1fr; }
+    .price-card { flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+    .splash-logo img { width: 100px; }
+    .splash-text { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN (PRELOADER ANIMATION) -->
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-logo">
+    <img src="images/Logo6.png" alt="Spin & Sparkle Laundromat">
+  </div>
+  <div class="splash-text">Spin & Sparkle</div>
+  <div class="splash-dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<!-- MAIN WEBSITE CONTENT -->
+<div class="main-content" id="mainContent">
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img class="nav-logo-img" src="images/Logo6.png" alt="Spin & Sparkle Laundromat Logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.nav-logo-fallback').style.display='flex';">
+      <div class="nav-logo-fallback" style="display: none; align-items: center; gap: 10px;">
+        <div class="nav-logo-icon" style="display: flex; width: 36px; height: 36px; background: var(--gold); border-radius: 50%; align-items: center; justify-content: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--blue-deep)"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg>
+        </div>
+        <span class="nav-logo-text" style="display: inline; font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black);">Spin <span style="color:var(--gold);">&</span> Sparkle</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="price.html" class="active">Price list</a></li>
+      <li><a href="pickup.html">Pickup</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Book Now</a>
+  </nav>
+
+  <div class="page-hero">
+    <span class="section-tag">💰 Transparent Pricing</span>
+    <h1>Our Price List</h1>
+    <p>Affordable rates with no hidden charges — professional cleaning at fair prices.</p>
+    <div class="page-hero-wave">
+      <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="60">
+        <path d="M0,30 C400,70 1000,0 1440,40 L1440,60 L0,60 Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="price-container">
+    <div class="price-section">
+      <h2>🧺 Laundry Services</h2>
+      <div class="price-grid" id="laundry-grid"></div>
+    </div>
+
+    <div class="price-section">
+      <h2>👔 Special Items & Garments</h2>
+      <div class="price-grid" id="special-grid"></div>
+    </div>
+
+    <div class="price-section">
+      <h2>🛏️ Home & Bedding</h2>
+      <div class="price-grid" id="home-grid"></div>
+    </div>
+
+    <div class="price-section">
+      <h2>📦 Monthly Packages (7KG per load)</h2>
+      <div class="price-grid" id="packages-grid"></div>
+    </div>
+
+    <div class="price-note">
+      <p><strong>✨ Free Pickup & Delivery</strong> — No minimum order, completely free. <br>
+      *Prices are subject to 16% VAT where applicable. For bulky items or special requests, kindly inquire.</p>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn-small">📞 Book a Pickup</a>
+        <a href="services.html" class="btn-small-outline">View Full Services</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Spin &amp; Sparkle Laundromat &mdash; Stelly Business Center, next to Uthiru ACK Girls &mdash; <a href="tel:0713779425">0713 779 425</a></p>
+  </footer>
+</div>
+
+<script>
+  // ========================
+  // DATA EXTRACTED FROM YOUR UPLOADED PRICE LIST
+  // ========================
+  const laundryItems = [
+    { name: "Laundry (Wash & Fold) - per kg (Min 5kg)", price: "Ksh 120" },
+    { name: "Laundry (Wash & Iron) - per kg (Min 5kg)", price: "Ksh 150" },
+    { name: "Gym Clothes - per kg", price: "Ksh 120" },
+    { name: "Baby Clothes - per kg", price: "Ksh 150" },
+    { name: "Ironing / Pressing", price: "Ksh 50" },
+    { name: "Overalls", price: "Ksh 400" },
+    { name: "Bathroom Mats", price: "Ksh 150" },
+    { name: "Towels", price: "Ksh 150" }
+  ];
+
+  const specialItems = [
+    { name: "Pillows (per piece)", price: "Ksh 150" },
+    { name: "Mattress Protector / Cover", price: "Ksh 350" },
+    { name: "Caps", price: "Ksh 150" },
+    { name: "Leather Jackets", price: "Ksh 300" },
+    { name: "Denim Jackets", price: "Ksh 200" },
+    { name: "Jeans", price: "Ksh 250" },
+    { name: "Shirts", price: "Ksh 200" },
+    { name: "Dresses", price: "Ksh 300" },
+    { name: "Suit (2 pieces)", price: "Ksh 600" },
+    { name: "Suit (3 pieces)", price: "Ksh 700" },
+    { name: "Suit (4 pieces)", price: "Ksh 800" },
+    { name: "Trench Coats", price: "Ksh 300" },
+    { name: "Jackets", price: "Ksh 300" },
+    { name: "Dustcoats", price: "Ksh 300" },
+    { name: "Graduation Gown", price: "Ksh 700" },
+    { name: "School Bags", price: "Ksh 150" },
+    { name: "Suitcases (per item)", price: "Ksh 300 / 400 / 500" },
+    { name: "Sleeping Bags", price: "Ksh 300 / 400 / 500" }
+  ];
+
+  const homeBedding = [
+    { name: "Carpets", price: "From Ksh 700" },
+    { name: "Bed Sheets (Single)", price: "Ksh 150" },
+    { name: "Bed Sheets (Pair with pillow case)", price: "Ksh 300" },
+    { name: "Seat / Cushion Covers (per seat/pair)", price: "Ksh 500" },
+    { name: "Fleece Blankets", price: "Ksh 300 / 400 / 500" },
+    { name: "Duvet 6' x 6'", price: "Ksh 600" },
+    { name: "Duvet 5' x 6'", price: "Ksh 500" },
+    { name: "Duvet 4' x 6'", price: "Ksh 400" },
+    { name: "Curtains (per pair)", price: "Ksh 500" }
+  ];
+
+  const monthlyPackages = [
+    { name: "⭐ LITE PLAN — 4 Loads (7KG each)", price: "Ksh 3,360", class: "package-card" },
+    { name: "🔥 CLASSIC PLAN — 6 Loads (7KG each)", price: "Ksh 4,800", class: "package-card" },
+    { name: "💎 MAXIMUM PLAN — 8 Loads (7KG each)", price: "Ksh 6,240", class: "package-card" }
+  ];
+
+  function renderPriceGrid(items, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    items.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = `price-card ${item.class || ''}`;
+      card.setAttribute('data-delay', idx * 30);
+      card.innerHTML = `
+        <span class="price-item-name">${item.name}</span>
+        <span class="price-amount">${item.price}</span>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  renderPriceGrid(laundryItems, 'laundry-grid');
+  renderPriceGrid(specialItems, 'special-grid');
+  renderPriceGrid(homeBedding, 'home-grid');
+  renderPriceGrid(monthlyPackages, 'packages-grid');
+
+  // SPLASH SCREEN LOGIC
+  window.addEventListener('load', function() {
+    const splash = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
+    
+    setTimeout(function() {
+      splash.classList.add('hide');
+      mainContent.classList.add('reveal');
+      setTimeout(function() {
+        splash.style.display = 'none';
+      }, 800);
+    }, 1800);
+  });
+
+  // Intersection Observer for price cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = parseInt(entry.target.dataset.delay) || 0;
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+  function observeCards() {
+    const allCards = document.querySelectorAll('.price-card');
+    allCards.forEach(card => {
+      observer.observe(card);
+    });
+  }
+
+  setTimeout(observeCards, 100);
+
+  const navCta = document.querySelector('.nav-cta');
+  if (navCta) {
+    navCta.addEventListener('mouseenter', () => navCta.style.transform = 'translateY(-2px)');
+    navCta.addEventListener('mouseleave', () => navCta.style.transform = 'translateY(0)');
+  }
+</script>
+</body>
+</html>

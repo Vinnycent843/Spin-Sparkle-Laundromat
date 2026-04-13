@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Spin & Sparkle Laundromat | Fresh & Responsive</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep: #0D47A1;
+    --blue-mid: #1565C0;
+    --blue-bright: #1E88E5;
+    --blue-light: #BBDEFB;
+    --blue-pale: #E3F2FD;
+    --gold: #FFB300;
+    --gold-light: #FFE082;
+    --white: #ffffff;
+    --black: #000000;
+    --orange: #FF8C00;
+    --text-dark: #0A1628;
+    --text-muted: #546E7A;
+    --nav-h: 70px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--white); overflow-x: hidden; }
+
+  /* ========== SPLASH SCREEN (PRELOADER ANIMATION) ========== */
+  .splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0D47A1 0%, #0a3b8a 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  
+  .splash-logo {
+    animation: splashZoomIn 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+  }
+  
+  .splash-logo img {
+    width: 350px;
+    height: auto;
+    max-width: 70vw;
+    filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
+    animation: logoGlow 1.5s ease-in-out infinite alternate;
+  }
+  
+  @keyframes splashZoomIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) rotate(-10deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05) rotate(2deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0);
+    }
+  }
+  
+  @keyframes logoGlow {
+    0% {
+      filter: drop-shadow(0 5px 15px rgba(255,179,0,0.3));
+    }
+    100% {
+      filter: drop-shadow(0 15px 35px rgba(255,179,0,0.6));
+    }
+  }
+  
+  .splash-text {
+    margin-top: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  
+  .splash-dots {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+  
+  .splash-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: dotPulse 1.2s ease infinite;
+  }
+  
+  .splash-dots span:nth-child(1) { animation-delay: 0s; }
+  .splash-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes dotPulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Hide splash after animation */
+  .splash-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  /* Main content initially hidden, then revealed */
+  .main-content {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  
+  .main-content.reveal {
+    opacity: 1;
+  }
+
+  /* ========== NAVIGATION - WITH LOGO IMAGE & WHITE BACKGROUND ========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    background: var(--white);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    transition: background 0.3s;
+  }
+  .nav-logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .nav-logo:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Logo image styling */
+  .nav-logo-img {
+    height: 48px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+    transition: all 0.2s ease;
+  }
+  
+  /* Optional fallback text (hidden when logo loads) */
+  .nav-logo-text {
+    display: none;
+  }
+  
+  .nav-logo-icon {
+    display: none;
+  }
+  
+  .nav-links { display: flex; gap: 8px; list-style: none; }
+  .nav-links a {
+    color: var(--black);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .nav-links a:hover {
+    color: var(--orange);
+    background: rgba(0,0,0,0.05);
+  }
+  .nav-links a:hover::after {
+    width: 60%;
+  }
+  .nav-links a.active {
+    color: var(--orange);
+  }
+  .nav-links a.active::after {
+    width: 60%;
+    background: var(--orange);
+  }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 9px 22px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(255,179,0,0.3);
+  }
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 6px 20px rgba(255,140,0,0.4);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--blue-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(var(--nav-h) + 3rem) 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bubbles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    animation: floatUp linear infinite;
+  }
+  .bubble:nth-child(1)  { width:60px;  height:60px;  left:8%;   animation-duration:9s;  animation-delay:0s;  }
+  .bubble:nth-child(2)  { width:30px;  height:30px;  left:18%;  animation-duration:7s;  animation-delay:1s;  }
+  .bubble:nth-child(3)  { width:90px;  height:90px;  left:30%;  animation-duration:12s; animation-delay:2s;  }
+  .bubble:nth-child(4)  { width:20px;  height:20px;  left:55%;  animation-duration:6s;  animation-delay:0.5s;}
+  .bubble:nth-child(5)  { width:50px;  height:50px;  left:70%;  animation-duration:10s; animation-delay:3s;  }
+  .bubble:nth-child(6)  { width:80px;  height:80px;  left:85%;  animation-duration:8s;  animation-delay:1.5s;}
+  .bubble:nth-child(7)  { width:25px;  height:25px;  left:45%;  animation-duration:7s;  animation-delay:4s;  }
+  .bubble:nth-child(8)  { width:40px;  height:40px;  left:92%;  animation-duration:11s; animation-delay:2.5s;}
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) scale(0.8); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,179,0,0.15);
+    border: 1px solid rgba(255,179,0,0.4);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 18px;
+    border-radius: 25px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.7s ease both;
+  }
+  .hero-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  
+  /* Typing animation container */
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+    min-height: 140px;
+    animation: fadeDown 0.8s 0.15s ease both;
+  }
+  .typewriter-text {
+    display: inline-block;
+  }
+  .typewriter-text em {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .static-clean {
+    display: inline-block;
+  }
+  .cursor {
+    display: inline-block;
+    width: 3px;
+    margin-left: 4px;
+    background-color: var(--gold);
+    animation: blink 0.8s step-end infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .hero-sub {
+    color: var(--blue-light);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeDown 0.8s 0.45s ease both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(255,179,0,0.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 8px 28px rgba(255,140,0,0.5);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 14px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-outline:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.7);
+  }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.8s 0.6s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--blue-light);
+    margin-top: 2px;
+  }
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    line-height: 0;
+  }
+
+  /* FEATURES STRIP */
+  .features-strip {
+    background: var(--blue-pale);
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .feature-item.visible { opacity: 1; transform: translateY(0); }
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .feature-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--white);
+  }
+  .feature-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue-deep);
+  }
+  .feature-text span {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* SERVICES PREVIEW */
+  .section-home { padding: 5rem 3rem; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-tag {
+    display: inline-block;
+    background: var(--blue-pale);
+    color: var(--blue-mid);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--blue-deep);
+    margin-bottom: 0.8rem;
+  }
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .services-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto 2.5rem;
+  }
+  .service-mini {
+    border: 1px solid var(--blue-light);
+    border-radius: 16px;
+    padding: 1.5rem 1.2rem;
+    background: var(--white);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .service-mini.visible { opacity: 1; transform: translateY(0); }
+  .service-mini:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(21,101,192,0.15);
+    border-color: var(--blue-bright);
+  }
+  .service-mini-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--blue-pale);
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+  .service-mini:hover .service-mini-icon { background: var(--blue-mid); }
+  .service-mini-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--blue-mid);
+    transition: fill 0.3s;
+  }
+  .service-mini:hover .service-mini-icon svg { fill: var(--white); }
+  .service-mini h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--blue-deep);
+  }
+  .center-btn { text-align: center; }
+
+  /* PICKUP BANNER */
+  .pickup-banner {
+    background: var(--blue-mid);
+    margin: 0 3rem;
+    border-radius: 24px;
+    padding: 3rem 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    overflow: hidden;
+    position: relative;
+  }
+  .pickup-banner::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .pickup-banner::after {
+    content: '';
+    position: absolute;
+    right: 60px;
+    bottom: -80px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .pickup-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+  }
+  .pickup-content p {
+    color: var(--blue-light);
+    font-size: 15px;
+    max-width: 400px;
+  }
+  .pickup-badge {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 20px;
+    border-radius: 20px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--text-dark);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 2rem 3rem;
+    font-size: 13px;
+    margin-top: 5rem;
+  }
+  footer a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
+
+  /* ========== RESPONSIVE: nav links always visible + logo adjusts ========== */
+  @media (max-width: 992px) {
+    .hero-stats { gap: 2rem; }
+    .features-strip { gap: 2rem; padding: 2rem 2rem; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-logo-img { height: 42px; max-width: 140px; }
+    .nav-links { gap: 4px; }
+    .nav-links a { padding: 6px 10px; font-size: 12px; }
+    .nav-cta { padding: 6px 14px; font-size: 12px; }
+    .hero { padding: calc(var(--nav-h) + 2rem) 1.2rem 3rem; }
+    .hero-headline { font-size: clamp(1.8rem, 5vw, 2.6rem); min-height: 110px; line-height: 1.2; }
+    .hero-sub { font-size: 0.9rem; max-width: 90%; }
+    .hero-btns .btn-primary, .hero-btns .btn-outline { padding: 10px 22px; font-size: 13px; }
+    .hero-stats .stat-num { font-size: 1.8rem; }
+    .features-strip { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 1.8rem 1.5rem; gap: 1.5rem; }
+    .feature-item { flex: 0 1 auto; min-width: 160px; justify-content: center; }
+    .section-home { padding: 3rem 1.5rem; }
+    .section-header h2 { font-size: 1.8rem; }
+    .services-preview-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .pickup-banner { margin: 0 1.2rem; padding: 2rem 1.8rem; flex-direction: column; text-align: center; }
+    .pickup-content h2 { font-size: 1.7rem; }
+    .pickup-content p { max-width: 100%; font-size: 0.9rem; }
+    .pickup-banner .btn-primary { margin-top: 0.5rem; display: inline-block; }
+    footer { padding: 1.5rem 1rem; margin-top: 3rem; }
+    .splash-logo img { width: 140px; }
+    .splash-text { font-size: 1.2rem; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: flex !important; gap: 4px; }
+    .nav-links a { padding: 5px 8px; font-size: 11px; }
+    nav { padding: 0 0.8rem; }
+    .nav-logo-img { height: 38px; max-width: 130px; }
+    .nav-cta { padding: 5px 12px; font-size: 11px; }
+    .hero {
+      min-height: 55vh;
+      padding: calc(var(--nav-h) + 1rem) 1rem 1.8rem;
+    }
+    .hero-headline { min-height: auto; }
+    .hero-wave svg { height: 40px; }
+    .splash-logo img { width: 120px; }
+  }
+
+  @media (max-width: 480px) {
+    .services-preview-grid { grid-template-columns: 1fr; max-width: 260px; margin-left: auto; margin-right: auto; }
+    .nav-links a { padding: 4px 6px; font-size: 9px; }
+    .nav-cta { font-size: 9px; padding: 4px 10px; }
+    .nav-logo-img { height: 34px; max-width: 120px; }
+    .splash-logo img { width: 100px; }
+    .splash-text { font-size: 1rem; }
+  }
+  
+  .typewriter-text em { color: var(--gold); }
+  .static-clean { color: var(--white); }
+</style>
+</head>
+<body>
+
+<!-- SPLASH SCREEN (PRELOADER ANIMATION) -->
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-logo">
+    <img src="images/Logo6.png" alt="Spin & Sparkle Laundromat">
+  </div>
+  <div class="splash-text">Spin & Sparkle</div>
+  <div class="splash-dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<!-- MAIN WEBSITE CONTENT -->
+<div class="main-content" id="mainContent">
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img class="nav-logo-img" src="images/Logo6.png" alt="Spin & Sparkle Laundromat Logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.nav-logo-fallback').style.display='flex';">
+      <div class="nav-logo-fallback" style="display: none; align-items: center; gap: 10px;">
+        <div class="nav-logo-icon" style="display: flex; width: 36px; height: 36px; background: var(--gold); border-radius: 50%; align-items: center; justify-content: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--blue-deep)"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg>
+        </div>
+        <span class="nav-logo-text" style="display: inline; font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black);">Spin <span style="color:var(--gold);">&</span> Sparkle</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="price.html">Price list</a></li>
+      <li><a href="pickup.html">Pickup</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">Book Now</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bubbles">
+      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+      <div class="bubble"></div><div class="bubble"></div>
+    </div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span> Nairobi's Trusted Laundromat</div>
+    <div class="hero-headline" id="dynamicHeadline">
+      <span class="static-clean">Fresh, Clean &amp; </span>
+      <span class="typewriter-text"><em></em></span>
+      <span class="cursor">|</span>
+    </div>
+    <p class="hero-sub">Professional laundry, dry cleaning &amp; specialist cleaning — all delivered right to your door at no extra charge.</p>
+    <div class="hero-btns">
+      <a href="contact.html" class="btn-primary">Book a Pickup</a>
+      <a href="services.html" class="btn-outline">View All Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Services offered</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free delivery</div></div>
+      <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Quick turnaround</div></div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="80">
+        <path d="M0,40 C360,80 1080,0 1440,50 L1440,80 L0,80 Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="features-strip">
+    <div class="feature-item">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"/></svg></div>
+      <div class="feature-text"><strong>Free Pickup</strong><span>We come to you</span></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+      <div class="feature-text"><strong>Fast Turnaround</strong><span>Ready within 24h</span></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+      <div class="feature-text"><strong>Quality Guaranteed</strong><span>Professional care</span></div>
+    </div>
+  </div>
+
+  <section class="section-home">
+    <div class="section-header">
+      <span class="section-tag">What we offer</span>
+      <h2>Our Cleaning Services</h2>
+      <p>From everyday laundry to specialist items — we handle it all with care.</p>
+    </div>
+    <div class="services-preview-grid">
+      <div class="service-mini">
+        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg></div>
+        <h3>Wash &amp; Fold</h3>
+      </div>
+      <div class="service-mini">
+        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-8 7.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+        <h3>Dry Cleaning</h3>
+      </div>
+      <div class="service-mini">
+        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M3 17v2h18v-2H3zm4-3l2-2-2-2-1 1-3-3 1-1-2-2-2 2 2 2 1-1 3 3-1 1 2 2 1-1zm10 0l2-2-2-2-1 1-3-3 1-1-2-2-2 2 2 2 1-1 3 3-1 1 2 2 1-1z"/></svg></div>
+        <h3>Carpet Cleaning</h3>
+      </div>
+    </div>
+    <div class="center-btn">
+      <a href="services.html" class="btn-primary">See All 10 Services</a>
+    </div>
+  </section>
+
+  <section style="padding: 0 0 5rem;">
+    <div class="pickup-banner">
+      <div class="pickup-content">
+        <h2>Free Pickup &amp; Delivery</h2>
+        <p>We come to your door, collect your laundry, clean it to perfection and return it fresh. Zero extra charges — ever.</p>
+        <div class="pickup-badge">100% Free — No hidden fees</div>
+      </div>
+      <a href="pickup.html" class="btn-primary" style="position:relative;z-index:1;">How It Works</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Spin &amp; Sparkle Laundromat &mdash; Stelly Business Center, next to Uthiru ACK Girls &mdash; <a href="tel:0713779425">0713 779 425</a></p>
+  </footer>
+</div>
+
+<script>
+  // SPLASH SCREEN LOGIC - Show logo animation before loading main content
+  window.addEventListener('load', function() {
+    const splash = document.getElementById('splashScreen');
+    const mainContent = document.getElementById('mainContent');
+    
+    // Ensure splash is visible for at least 1.5 seconds for smooth animation
+    setTimeout(function() {
+      splash.classList.add('hide');
+      mainContent.classList.add('reveal');
+      
+      // Remove splash from DOM after transition to free up resources
+      setTimeout(function() {
+        splash.style.display = 'none';
+      }, 800);
+    }, 1800); // 1.8 seconds of splash animation
+  });
+  
+  // Intersection Observer for feature items and service cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.feature-item, .service-mini').forEach((el, i) => {
+    el.dataset.delay = i * 100;
+    observer.observe(el);
+  });
+  
+  // TYPING EFFECT
+  const words = ["Sparkling", "Radiant", "Immaculate", "Fresh"];
+  let wordIndex = 0, charIndex = 0, isDeleting = false;
+  const typewriterSpan = document.querySelector('.typewriter-text em');
+  function typeEffect() {
+    if (!typewriterSpan) return;
+    const currentWord = words[wordIndex];
+    if (isDeleting) {
+      typewriterSpan.textContent = currentWord.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      typewriterSpan.textContent = currentWord.substring(0, charIndex + 1);
+      charIndex++;
+    }
+    if (!isDeleting && charIndex === currentWord.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, 2000);
+      return;
+    }
+    if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      setTimeout(typeEffect, 400);
+      return;
+    }
+    setTimeout(typeEffect, isDeleting ? 60 : 120);
+  }
+  setTimeout(() => { if(typewriterSpan) typeEffect(); }, 600);
+</script>
+</body>
+</html>
