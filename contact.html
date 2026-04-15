@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Contact Us — Spin & Sparkle Laundromat</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   :root {
     --blue-deep: #0D47A1;
@@ -16,7 +17,6 @@
     --white: #ffffff;
     --black: #000000;
     --orange: #FF8C00;
-    --whatsapp: #25D366;
     --text-dark: #0A1628;
     --text-muted: #546E7A;
     --nav-h: 70px;
@@ -138,59 +138,6 @@
   
   .main-content.reveal {
     opacity: 1;
-  }
-
-  /* ========== FLOATING WHATSAPP BUTTON - REAL ICON, NO EXTRA WHITE ========== */
-  .whatsapp-float {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    background-color: var(--whatsapp);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    animation: floatPulse 2s ease infinite;
-    text-decoration: none;
-  }
-  
-  .whatsapp-float:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
-  }
-  
-  @keyframes floatPulse {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-  
-  .whatsapp-float svg {
-    width: 34px;
-    height: 34px;
-    fill: var(--white);
-  }
-  
-  @media (max-width: 640px) {
-    .whatsapp-float {
-      width: 52px;
-      height: 52px;
-      bottom: 20px;
-      right: 20px;
-    }
-    .whatsapp-float svg {
-      width: 28px;
-      height: 28px;
-    }
   }
 
   /* ========== NAVIGATION - WITH LOGO IMAGE & WHITE BACKGROUND ========== */
@@ -451,10 +398,126 @@
     background: #ffc107;
   }
 
-  /* ========== FOOTER ========== */
-  footer { background: var(--text-dark); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem 3rem; font-size: 13px; }
-  footer a { color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
-  footer a:hover { opacity: 0.8; text-decoration: underline; }
+  /* ========== FOOTER - REDESIGNED WITH LOCATION & MAP DIRECTIONS ========== */
+  .footer {
+    background: var(--text-dark);
+    color: rgba(255,255,255,0.6);
+    padding: 3rem 3rem 2rem;
+    margin-top: 0;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Footer Location Section */
+  .footer-location {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .footer-location strong {
+    display: block;
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-location span {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-directions-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 8px 20px;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(255,179,0,0.3);
+  }
+  
+  .footer-directions-btn:hover {
+    transform: translateY(-2px);
+    background: #ffc107;
+    box-shadow: 0 6px 18px rgba(255,179,0,0.45);
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .social-icons a:hover {
+    background: var(--gold);
+    color: var(--blue-deep);
+    transform: translateY(-3px);
+  }
+  
+  .footer-copyright {
+    text-align: center;
+    font-size: 13px;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .footer-copyright a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  
+  .footer-copyright a:hover {
+    text-decoration: underline;
+  }
 
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
 
@@ -469,8 +532,11 @@
     .contact-section { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
     .form-row { grid-template-columns: 1fr; }
     .map-section { padding: 3rem 1.5rem; }
-    .splash-logo img { width: 140px; }
+    .splash-logo img { width: 300px; max-width: 70vw; }
     .splash-text { font-size: 1.2rem; }
+    .footer { padding: 2rem 1.5rem; }
+    .footer-links { gap: 1.2rem; }
+    .footer-links a { font-size: 12px; }
   }
 
   @media (max-width: 640px) {
@@ -504,8 +570,13 @@
     .map-pin-icon svg { width: 26px; height: 26px; }
     .map-directions-btn { font-size: 13px; padding: 10px 22px; }
     
-    footer { padding: 1.2rem 1rem; font-size: 11px; }
-    .splash-logo img { width: 120px; }
+    .splash-logo img { width: 280px; max-width: 80vw; }
+    .footer { padding: 1.5rem 1rem; }
+    .footer-links { flex-wrap: wrap; gap: 1rem; }
+    .social-icons { gap: 1rem; }
+    .social-icons a { width: 36px; height: 36px; font-size: 1rem; }
+    .footer-location span { font-size: 0.75rem; }
+    .footer-directions-btn { font-size: 0.75rem; padding: 6px 16px; }
   }
 
   @media (max-width: 480px) {
@@ -514,7 +585,7 @@
     .nav-logo-img { height: 34px; max-width: 120px; }
     .page-hero h1 { font-size: 1.6rem; }
     .contact-form-wrap .form-sub { font-size: 12px; }
-    .splash-logo img { width: 100px; }
+    .splash-logo img { width: 260px; max-width: 85vw; }
     .splash-text { font-size: 1rem; }
   }
 </style>
@@ -556,14 +627,6 @@
     <a href="tel:0713779425" class="nav-cta">📞 0713 779 425</a>
   </nav>
 
-  <!-- FLOATING WHATSAPP BUTTON - PURE ICON, NO EXTRA ELEMENTS -->
-  <a href="https://wa.me/c/254713779425" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
-    <svg viewBox="0 0 24 24">
-      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.91-9.91-9.91zm-.04 2c4.37 0 7.93 3.56 7.93 7.93 0 4.37-3.56 7.93-7.93 7.93-1.46 0-2.87-.39-4.09-1.12l-4.34 1.14 1.14-4.26c-.74-1.22-1.14-2.63-1.14-4.09 0-4.37 3.56-7.93 7.93-7.93z"/>
-      <path d="M16.97 14.38c-.13-.22-.48-.35-.98-.61-.5-.26-2.96-1.46-3.42-1.63-.46-.17-.79-.26-1.12.26-.33.52-1.29 1.63-1.58 1.96-.29.33-.59.37-1.09.11-.5-.26-2.11-1.04-4.02-2.48-1.48-1.12-2.48-2.51-2.77-2.93-.29-.42-.03-.65.22-.86.22-.19.49-.44.74-.66.25-.22.33-.37.49-.62.16-.25.08-.47-.04-.66-.12-.19-1.12-2.69-1.53-3.68-.4-.97-.81-.84-1.12-.86h-.96c-.33 0-.86.13-1.31.65-.45.52-1.72 1.68-1.72 4.1 0 2.42 1.76 4.76 2.01 5.09.25.33 3.47 5.3 8.41 7.43 1.17.51 2.09.81 2.81 1.04 1.18.37 2.26.32 3.11.19.95-.14 2.93-1.2 3.34-2.36.41-1.16.41-2.15.29-2.36-.12-.21-.44-.34-.94-.6z"/>
-    </svg>
-  </a>
-
   <div class="page-hero">
     <span class="section-tag">✨ Get in touch ✨</span>
     <h1>Contact Us</h1>
@@ -591,14 +654,14 @@
           <div class="info-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
           <div class="info-card-text">
             <label>📍 Location</label>
-            <p>Stelly Business Center,<br>next to Uthiru ACK Girls</p>
+            <p>Stelly Business Center,<br>next to Uthiru ACK Girls-Along Waiyaki Way-Nairobi</p>
           </div>
         </div>
         <div class="info-card" data-delay="200">
           <div class="info-card-icon"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
           <div class="info-card-text">
             <label>⏰ Working hours</label>
-            <p>Mon – Sat: 7:00 AM – 7:00 PM<br>Sunday: 9:00 AM – 5:00 PM</p>
+            <p>Mon – Sat: 8:00 AM – 8:00 PM<br>Sunday: 9:00 AM – 5:00 PM</p>
           </div>
         </div>
         <div class="info-card" data-delay="300">
@@ -626,7 +689,7 @@
       </div>
       <div class="form-group">
         <label for="phone">Phone number *</label>
-        <input type="tel" id="phone" placeholder="07XX XXX XXX">
+        <input type="tel" id="phone" placeholder="">
       </div>
       <div class="form-group">
         <label for="service">Service interested in</label>
@@ -641,6 +704,7 @@
           <option>Pillow Cleaning</option>
           <option>Shoe Cleaning</option>
           <option>Bags &amp; Suitcase Cleaning</option>
+          <option>Home Cleaning</option>
           <option>Other / Multiple services</option>
         </select>
       </div>
@@ -664,15 +728,44 @@
       </div>
       <div class="map-addr">
         <strong>Spin &amp; Sparkle Laundromat</strong>
-        <span>Stelly Business Center, next to Uthiru ACK Girls, Nairobi</span>
+        <span>Stelly Business Center, next to Uthiru ACK Girls, Along Waiyaki Way - Nairobi</span>
       </div>
     </div>
-    <br>
-    <a href="https://maps.google.com/?q=Stelly+Business+Center+Uthiru+Nairobi" target="_blank" class="map-directions-btn">🗺️ Get Directions on Google Maps</a>
+  
   </section>
 
-  <footer>
-    <p>&copy; 2025 Spin &amp; Sparkle Laundromat &mdash; Stelly Business Center, next to Uthiru ACK Girls &mdash; <a href="tel:0713779425">0713 779 425</a></p>
+  <!-- REDESIGNED FOOTER WITH LOCATION & DIRECTIONS -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Location and Directions Section -->
+      <div class="footer-location">
+        <strong>Spin &amp; Sparkle Laundromat</strong>
+        <span>Stelly Business Center, next to Uthiru ACK Girls, Along Waiyaki Way - Nairobi</span>
+        <a href="https://maps.google.com/?q=Stelly+Business+Center+Uthiru+Nairobi" target="_blank" class="footer-directions-btn">
+          <i class="fas fa-map-marker-alt"></i> Get Directions on Google Maps
+        </a>
+      </div>
+      
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="price.html">Price List</a>
+        <a href="pickup.html">Pickup</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      
+      <div class="social-icons">
+        <a href="https://facebook.com/spinandsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+        <a href="https://twitter.com/spinnsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/c/254713779425" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      
+      <div class="footer-copyright">
+        <p>&copy; 2026 Spin &amp; Sparkle Laundromat  <a href="tel:0713779425">0713 779 425</a> | Designed by <a href="https://sites.google.com/view/vincentimbosaeportfolio/home" target="_blank" rel="noopener noreferrer">Clark Digital Hub</a></p>
+      </div>
+    </div>
   </footer>
 </div>
 
