@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Spin & Sparkle Laundromat | Fresh & Responsive</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   :root {
     --blue-deep: #0D47A1;
@@ -457,6 +458,129 @@
     color: var(--text-muted);
   }
 
+  /* ========== COMING SOON BANNER - HOME CLEANING SERVICES (FULL CONTAINER BLINK IN-OUT EFFECT) ========== */
+  .coming-soon {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, #0a3480 100%);
+    margin: 2rem 3rem;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    /* FULL CONTAINER BLINK IN-OUT ANIMATION */
+    animation: containerBlinkInOut 1.2s ease-in-out infinite;
+  }
+  
+  @keyframes containerBlinkInOut {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.01);
+    }
+  }
+  
+  .coming-soon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,179,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .coming-soon-inner {
+    padding: 2.5rem 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .coming-soon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,179,0,0.15);
+    backdrop-filter: blur(4px);
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gold);
+    border: 1px solid rgba(255,179,0,0.4);
+  }
+  
+  .coming-soon-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  
+  .coming-soon-title span {
+    color: var(--gold);
+  }
+  
+  .coming-soon-desc {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+  }
+  
+  .coming-soon-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .coming-soon-service-tag {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 1rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  
+  .coming-soon-service-tag i {
+    color: var(--gold);
+    font-size: 0.75rem;
+  }
+  
+  .coming-soon-service-tag:hover {
+    background: rgba(255,179,0,0.25);
+    transform: translateY(-2px);
+    border-color: rgba(255,179,0,0.5);
+  }
+  
+  .coming-soon-note {
+    background: rgba(255,179,0,0.12);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gold);
+    border: 1px solid rgba(255,179,0,0.3);
+  }
+  
+  .coming-soon-note i {
+    font-size: 1rem;
+  }
+
   /* SERVICES PREVIEW */
   .section-home { padding: 5rem 3rem; }
   .section-header { text-align: center; margin-bottom: 3rem; }
@@ -589,27 +713,131 @@
     border-radius: 20px;
   }
 
-  /* FOOTER */
-  footer {
+  /* ========== REDESIGNED FOOTER WITH LOCATION & MAP DIRECTIONS ========== */
+  .footer {
     background: var(--text-dark);
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    padding: 2rem 3rem;
-    font-size: 13px;
-    margin-top: 5rem;
+    color: rgba(255,255,255,0.6);
+    padding: 3rem 3rem 2rem;
+    margin-top: 0;
   }
-  footer a {
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Footer Location Section */
+  .footer-location {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .footer-location strong {
+    display: block;
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-location span {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-directions-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--blue-deep);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 8px 20px;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(255,179,0,0.3);
+  }
+  
+  .footer-directions-btn:hover {
+    transform: translateY(-2px);
+    background: #ffc107;
+    box-shadow: 0 6px 18px rgba(255,179,0,0.45);
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .social-icons a:hover {
+    background: var(--gold);
+    color: var(--blue-deep);
+    transform: translateY(-3px);
+  }
+  
+  .footer-copyright {
+    text-align: center;
+    font-size: 13px;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .footer-copyright a {
     color: var(--gold);
     text-decoration: none;
   }
-  footer a:hover {
+  
+  .footer-copyright a:hover {
     text-decoration: underline;
   }
 
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
 
-  /* ========== RESPONSIVE: nav links always visible + logo adjusts ========== */
+  /* ========== RESPONSIVE: nav links always visible + INCREASED LOGO SIZE ON MOBILE ========== */
   @media (max-width: 992px) {
     .hero-stats { gap: 2rem; }
     .features-strip { gap: 2rem; padding: 2rem 2rem; }
@@ -628,6 +856,11 @@
     .hero-stats .stat-num { font-size: 1.8rem; }
     .features-strip { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 1.8rem 1.5rem; gap: 1.5rem; }
     .feature-item { flex: 0 1 auto; min-width: 160px; justify-content: center; }
+    .coming-soon { margin: 2rem 1.2rem; }
+    .coming-soon-inner { padding: 1.8rem; }
+    .coming-soon-title { font-size: 1.5rem; }
+    .coming-soon-desc { font-size: 0.9rem; }
+    .coming-soon-service-tag { font-size: 0.75rem; padding: 0.45rem 0.9rem; }
     .section-home { padding: 3rem 1.5rem; }
     .section-header h2 { font-size: 1.8rem; }
     .services-preview-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
@@ -635,8 +868,11 @@
     .pickup-content h2 { font-size: 1.7rem; }
     .pickup-content p { max-width: 100%; font-size: 0.9rem; }
     .pickup-banner .btn-primary { margin-top: 0.5rem; display: inline-block; }
-    footer { padding: 1.5rem 1rem; margin-top: 3rem; }
-    .splash-logo img { width: 140px; }
+    .footer { padding: 2rem 1.5rem; }
+    .footer-links { gap: 1.2rem; }
+    .footer-links a { font-size: 12px; }
+    /* INCREASED LOGO SIZE ON TABLET */
+    .splash-logo img { width: 300px; max-width: 70vw; }
     .splash-text { font-size: 1.2rem; }
   }
 
@@ -652,7 +888,21 @@
     }
     .hero-headline { min-height: auto; }
     .hero-wave svg { height: 40px; }
-    .splash-logo img { width: 120px; }
+    .coming-soon { margin: 1.5rem 1rem; border-radius: 20px; }
+    .coming-soon-inner { padding: 1.2rem; }
+    .coming-soon-title { font-size: 1.3rem; }
+    .coming-soon-desc { font-size: 0.8rem; margin-bottom: 1rem; }
+    .coming-soon-service-tag { font-size: 0.65rem; padding: 0.35rem 0.7rem; gap: 5px; }
+    .coming-soon-service-tag i { font-size: 0.65rem; }
+    .coming-soon-note { font-size: 0.7rem; padding: 0.5rem 1rem; }
+    .footer { padding: 1.5rem 1rem; }
+    .footer-links { flex-wrap: wrap; gap: 1rem; }
+    .social-icons { gap: 1rem; }
+    .social-icons a { width: 36px; height: 36px; font-size: 1rem; }
+    .footer-location span { font-size: 0.75rem; }
+    .footer-directions-btn { font-size: 0.75rem; padding: 6px 16px; }
+    /* INCREASED LOGO SIZE ON MOBILE - MATCHING DESKTOP SIZE */
+    .splash-logo img { width: 280px; max-width: 80vw; }
   }
 
   @media (max-width: 480px) {
@@ -660,7 +910,11 @@
     .nav-links a { padding: 4px 6px; font-size: 9px; }
     .nav-cta { font-size: 9px; padding: 4px 10px; }
     .nav-logo-img { height: 34px; max-width: 120px; }
-    .splash-logo img { width: 100px; }
+    .coming-soon-services { gap: 0.5rem; }
+    .coming-soon-title { font-size: 1.2rem; }
+    .coming-soon-badge { font-size: 0.7rem; padding: 4px 12px; }
+    /* INCREASED LOGO SIZE ON SMALL MOBILE */
+    .splash-logo img { width: 260px; max-width: 85vw; }
     .splash-text { font-size: 1rem; }
   }
   
@@ -749,6 +1003,28 @@
     </div>
   </div>
 
+  <!-- COMING SOON SECTION - HOME CLEANING SERVICES (FULL CONTAINER BLINK IN-OUT EFFECT) -->
+  <div class="coming-soon">
+    <div class="coming-soon-inner">
+      <div class="coming-soon-badge">
+        <i class="fas fa-rocket"></i> 🚀 Coming Soon
+      </div>
+      <h2 class="coming-soon-title">Introducing <span>Home Cleaning Services</span></h2>
+      <p class="coming-soon-desc">We're expanding our expertise beyond laundry to transform your entire living space. Get ready for professional home cleaning tailored to your needs.</p>
+      <div class="coming-soon-services">
+        <span class="coming-soon-service-tag"><i class="fas fa-building"></i> Post-Construction Cleaning</span>
+        <span class="coming-soon-service-tag"><i class="fas fa-home"></i> Move-In Cleaning</span>
+        <span class="coming-soon-service-tag"><i class="fas fa-truck-moving"></i> Move-Out Cleaning</span>
+        <span class="coming-soon-service-tag"><i class="fas fa-calendar-alt"></i> Regular Cleaning</span>
+        <span class="coming-soon-service-tag"><i class="fas fa-broom"></i> Deep Cleaning</span>
+        <span class="coming-soon-service-tag"><i class="fas fa-star"></i> One-Time Cleaning</span>
+      </div>
+      <div class="coming-soon-note">
+        <i class="fas fa-bell"></i> Stay tuned — Launching soon! Be the first to know.
+      </div>
+    </div>
+  </div>
+
   <section class="section-home">
     <div class="section-header">
       <span class="section-tag">What we offer</span>
@@ -770,7 +1046,7 @@
       </div>
     </div>
     <div class="center-btn">
-      <a href="services.html" class="btn-primary">See All 10 Services</a>
+      <a href="services.html" class="btn-primary">See All Our Services</a>
     </div>
   </section>
 
@@ -785,8 +1061,38 @@
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2025 Spin &amp; Sparkle Laundromat &mdash; Stelly Business Center, next to Uthiru ACK Girls &mdash; <a href="tel:0713779425">0713 779 425</a></p>
+  <!-- REDESIGNED FOOTER WITH LOCATION & DIRECTIONS -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Location and Directions Section -->
+      <div class="footer-location">
+        <strong>Spin &amp; Sparkle Laundromat</strong>
+        <span>Stelly Business Center, next to Uthiru ACK Girls, Along Waiyaki Way - Nairobi</span>
+        <a href="https://maps.google.com/?q=Stelly+Business+Center+Uthiru+Nairobi" target="_blank" class="footer-directions-btn">
+          <i class="fas fa-map-marker-alt"></i> Get Directions on Google Maps
+        </a>
+      </div>
+      
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="price.html">Price List</a>
+        <a href="pickup.html">Pickup</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      
+      <div class="social-icons">
+        <a href="https://facebook.com/spinandsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+        <a href="https://twitter.com/spinnsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/c/254713779425" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+      </div>
+      
+      <div class="footer-copyright">
+        <p>&copy; 2026 Spin &amp; Sparkle Laundromat — <a href="tel:0713779425">0713 779 425</a> | Designed by <a href="https://sites.google.com/view/vincentimbosaeportfolio/home" target="_blank" rel="noopener noreferrer">Clark Digital Hub</a></p>
+      </div>
+    </div>
   </footer>
 </div>
 
