@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Spin & Sparkle Laundromat | Fresh & Responsive</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Spin & Sparkle Laundromat | Premium Laundry Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
   :root {
     --blue-deep: #0D47A1;
@@ -21,12 +23,54 @@
     --text-dark: #0A1628;
     --text-muted: #546E7A;
     --nav-h: 70px;
+    --whatsapp: #25D366;
   }
+  
+  /* Custom Cursor */
+  .custom-cursor {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+  }
+  
+  .custom-cursor-follower {
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease;
+  }
+  
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--white); overflow-x: hidden; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text-dark); background: var(--white); overflow-x: hidden; cursor: none; }
+  
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .custom-cursor, .custom-cursor-follower { display: none; }
+  }
 
-  /* ========== SPLASH SCREEN (PRELOADER ANIMATION) ========== */
+  /* Smooth Scroll Progress Bar */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--orange));
+    z-index: 10000;
+    transition: width 0.1s ease;
+  }
+
+  /* ========== SPLASH SCREEN ========== */
   .splash-screen {
     position: fixed;
     top: 0;
@@ -41,209 +85,51 @@
     z-index: 9999;
     transition: opacity 0.8s ease, visibility 0.8s ease;
   }
-  
-  .splash-logo {
-    animation: splashZoomIn 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
-  }
-  
-  .splash-logo img {
-    width: 350px;
-    height: auto;
-    max-width: 70vw;
-    filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
-    animation: logoGlow 1.5s ease-in-out infinite alternate;
-  }
-  
-  @keyframes splashZoomIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.5) rotate(-10deg);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.05) rotate(2deg);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) rotate(0);
-    }
-  }
-  
-  @keyframes logoGlow {
-    0% {
-      filter: drop-shadow(0 5px 15px rgba(255,179,0,0.3));
-    }
-    100% {
-      filter: drop-shadow(0 15px 35px rgba(255,179,0,0.6));
-    }
-  }
-  
-  .splash-text {
-    margin-top: 2rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--gold);
-    letter-spacing: 2px;
-    animation: fadeInUp 0.8s ease 0.3s both;
-  }
-  
-  .splash-dots {
-    display: flex;
-    gap: 10px;
-    margin-top: 1.5rem;
-  }
-  
-  .splash-dots span {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--gold);
-    animation: dotPulse 1.2s ease infinite;
-  }
-  
+  .splash-logo { animation: splashZoomIn 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards; }
+  .splash-logo img { width: 350px; height: auto; max-width: 70vw; filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2)); animation: logoGlow 1.5s ease-in-out infinite alternate; }
+  @keyframes splashZoomIn { 0% { opacity: 0; transform: scale(0.9) rotate(-10deg); } 50% { opacity: 1; transform: scale(1.05) rotate(2deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
+  @keyframes logoGlow { 0% { filter: drop-shadow(0 5px 15px rgba(255,179,0,0.3)); } 100% { filter: drop-shadow(0 15px 35px rgba(255,179,0,0.6)); } }
+  .splash-text { margin-top: 2rem; font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); letter-spacing: 2px; animation: fadeInUp 0.8s ease 0.3s both; }
+  .splash-dots { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .splash-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); animation: dotPulse 1.2s ease infinite; }
   .splash-dots span:nth-child(1) { animation-delay: 0s; }
   .splash-dots span:nth-child(2) { animation-delay: 0.2s; }
   .splash-dots span:nth-child(3) { animation-delay: 0.4s; }
-  
-  @keyframes dotPulse {
-    0%, 100% {
-      opacity: 0.3;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.2);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Hide splash after animation */
-  .splash-screen.hide {
-    opacity: 0;
-    visibility: hidden;
-  }
-  
-  /* Main content initially hidden, then revealed */
-  .main-content {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  
-  .main-content.reveal {
-    opacity: 1;
-  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .splash-screen.hide { opacity: 0; visibility: hidden; }
+  .main-content { opacity: 0; transition: opacity 0.5s ease; }
+  .main-content.reveal { opacity: 1; }
 
-  /* ========== NAVIGATION - WITH LOGO IMAGE & WHITE BACKGROUND ========== */
+  /* ========== NAVIGATION ========== */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     height: var(--nav-h);
-    background: var(--white);
+    background: rgba(255,255,255,0.98);
     backdrop-filter: blur(12px);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 3rem;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-    transition: background 0.3s;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s;
   }
-  .nav-logo { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    text-decoration: none;
-    transition: transform 0.2s ease;
-  }
-  .nav-logo:hover {
-    transform: scale(1.02);
-  }
-  
-  /* Logo image styling */
-  .nav-logo-img {
-    height: 48px;
-    width: auto;
-    max-width: 160px;
-    object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
-    transition: all 0.2s ease;
-  }
-  
-  /* Optional fallback text (hidden when logo loads) */
-  .nav-logo-text {
-    display: none;
-  }
-  
-  .nav-logo-icon {
-    display: none;
-  }
-  
+  nav.scrolled { box-shadow: 0 4px 25px rgba(0,0,0,0.1); background: var(--white); }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; transition: transform 0.2s ease; }
+  .nav-logo:hover { transform: scale(1.02); }
+  .nav-logo-img { height: 48px; width: auto; max-width: 160px; object-fit: contain; display: block; }
   .nav-links { display: flex; gap: 8px; list-style: none; }
-  .nav-links a {
-    color: var(--black);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width 0.3s;
-  }
-  .nav-links a:hover {
-    color: var(--orange);
-    background: rgba(0,0,0,0.05);
-  }
-  .nav-links a:hover::after {
-    width: 60%;
-  }
-  .nav-links a.active {
-    color: var(--orange);
-  }
-  .nav-links a.active::after {
-    width: 60%;
-    background: var(--orange);
-  }
-  .nav-cta {
-    background: var(--gold);
-    color: var(--blue-deep);
-    font-weight: 600;
-    font-size: 14px;
-    padding: 9px 22px;
-    border-radius: 25px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 3px 12px rgba(255,179,0,0.3);
-  }
-  .nav-cta:hover {
-    transform: translateY(-2px);
-    background: var(--orange);
-    color: var(--white);
-    box-shadow: 0 6px 20px rgba(255,140,0,0.4);
-  }
+  .nav-links a { color: var(--black); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 6px; transition: all 0.2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+  .nav-links a:hover { color: var(--orange); background: rgba(0,0,0,0.03); }
+  .nav-links a:hover::after { width: 60%; }
+  .nav-links a.active { color: var(--orange); }
+  .nav-links a.active::after { width: 60%; background: var(--orange); }
+  .nav-cta { background: linear-gradient(135deg, var(--gold), #ffc107); color: var(--blue-deep); font-weight: 600; font-size: 14px; padding: 9px 24px; border-radius: 30px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(255,179,0,0.25); }
+  .nav-cta:hover { transform: translateY(-2px); background: linear-gradient(135deg, #ffc107, var(--orange)); color: var(--white); box-shadow: 0 6px 20px rgba(255,140,0,0.4); }
 
-  /* HERO */
+  /* HERO SECTION */
   .hero {
     min-height: 100vh;
-    background: var(--blue-deep);
+    background: linear-gradient(145deg, var(--blue-deep) 0%, #0a3b8a 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -253,18 +139,8 @@
     position: relative;
     overflow: hidden;
   }
-  .hero-bubbles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .bubble {
-    position: absolute;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255,255,255,0.12);
-    animation: floatUp linear infinite;
-  }
+  .hero-bubbles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .bubble { position: absolute; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.12); animation: floatUp linear infinite; }
   .bubble:nth-child(1)  { width:60px;  height:60px;  left:8%;   animation-duration:9s;  animation-delay:0s;  }
   .bubble:nth-child(2)  { width:30px;  height:30px;  left:18%;  animation-duration:7s;  animation-delay:1s;  }
   .bubble:nth-child(3)  { width:90px;  height:90px;  left:30%;  animation-duration:12s; animation-delay:2s;  }
@@ -273,447 +149,123 @@
   .bubble:nth-child(6)  { width:80px;  height:80px;  left:85%;  animation-duration:8s;  animation-delay:1.5s;}
   .bubble:nth-child(7)  { width:25px;  height:25px;  left:45%;  animation-duration:7s;  animation-delay:4s;  }
   .bubble:nth-child(8)  { width:40px;  height:40px;  left:92%;  animation-duration:11s; animation-delay:2.5s;}
-  @keyframes floatUp {
-    0%   { transform: translateY(110vh) scale(0.8); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 0.6; }
-    100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,179,0,0.15);
-    border: 1px solid rgba(255,179,0,0.4);
-    color: var(--gold);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 7px 18px;
-    border-radius: 25px;
-    margin-bottom: 1.5rem;
-    animation: fadeDown 0.7s ease both;
-  }
-  .hero-badge-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--gold);
-    animation: pulse 2s infinite;
-  }
+  @keyframes floatUp { 0% { transform: translateY(110vh) scale(0.8); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 0.6; } 100% { transform: translateY(-20vh) scale(1.1); opacity: 0; } }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,179,0,0.15); border: 1px solid rgba(255,179,0,0.4); color: var(--gold); font-size: 13px; font-weight: 500; padding: 7px 18px; border-radius: 25px; margin-bottom: 1.5rem; }
+  .hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .hero-headline { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 900; color: var(--white); line-height: 1.2; margin-bottom: 1.2rem; min-height: 140px; }
+  .typewriter-text em { color: var(--gold); font-style: normal; }
+  .static-clean { color: var(--white); display: inline-block; }
+  .cursor { display: inline-block; width: 3px; margin-left: 4px; background-color: var(--gold); animation: blink 0.8s step-end infinite; vertical-align: middle; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .hero-sub { color: var(--blue-light); font-size: clamp(0.9rem, 2vw, 1.2rem); max-width: 520px; line-height: 1.7; margin-bottom: 2.5rem; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: linear-gradient(135deg, var(--gold), #ffc107); color: var(--blue-deep); font-weight: 600; font-size: 15px; padding: 14px 32px; border-radius: 40px; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(255,179,0,0.3); }
+  .btn-primary:hover { transform: translateY(-3px); background: linear-gradient(135deg, #ffc107, var(--orange)); color: var(--white); box-shadow: 0 8px 28px rgba(255,140,0,0.5); }
+  .btn-outline { background: transparent; color: var(--white); font-weight: 500; font-size: 15px; padding: 14px 32px; border-radius: 40px; text-decoration: none; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.4); transition: all 0.2s; }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
   
-  /* Typing animation container */
-  .hero-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.2rem, 6vw, 5rem);
-    font-weight: 900;
-    color: var(--white);
-    line-height: 1.2;
-    margin-bottom: 1.2rem;
-    min-height: 140px;
-    animation: fadeDown 0.8s 0.15s ease both;
-  }
-  .typewriter-text {
-    display: inline-block;
-  }
-  .typewriter-text em {
-    color: var(--gold);
-    font-style: normal;
-  }
-  .static-clean {
-    display: inline-block;
-  }
-  .cursor {
-    display: inline-block;
-    width: 3px;
-    margin-left: 4px;
-    background-color: var(--gold);
-    animation: blink 0.8s step-end infinite;
-    vertical-align: middle;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-  
-  .hero-sub {
-    color: var(--blue-light);
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    animation: fadeDown 0.8s 0.3s ease both;
-  }
-  .hero-btns {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeDown 0.8s 0.45s ease both;
-  }
-  .btn-primary {
-    background: var(--gold);
-    color: var(--blue-deep);
-    font-weight: 600;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 30px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 20px rgba(255,179,0,0.4);
-  }
-  .btn-primary:hover {
-    transform: translateY(-3px);
-    background: var(--orange);
-    color: var(--white);
-    box-shadow: 0 8px 28px rgba(255,140,0,0.5);
-  }
-  .btn-outline {
-    background: transparent;
-    color: var(--white);
-    font-weight: 500;
-    font-size: 15px;
-    padding: 14px 32px;
-    border-radius: 30px;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1.5px solid rgba(255,255,255,0.4);
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .btn-outline:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.7);
-  }
-  .hero-stats {
-    display: flex;
-    gap: 3rem;
-    margin-top: 4rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeUp 0.8s 0.6s ease both;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    color: var(--gold);
-    font-weight: 700;
-  }
-  .stat-label {
-    font-size: 13px;
-    color: var(--blue-light);
-    margin-top: 2px;
-  }
-  .hero-wave {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    line-height: 0;
-  }
+  .hero-stats { display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center; }
+  .stat-card { text-align: center; padding: 0 1rem; position: relative; }
+  .stat-card::after { content: ''; position: absolute; right: -1.5rem; top: 20%; height: 60%; width: 1px; background: rgba(255,255,255,0.2); }
+  .stat-card:last-child::after { display: none; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); font-weight: 700; display: block; }
+  .stat-label { font-size: 13px; color: var(--blue-light); margin-top: 5px; }
+  .hero-wave { position: absolute; bottom: -1px; left: 0; right: 0; line-height: 0; }
 
-  /* FEATURES STRIP */
-  .features-strip {
-    background: var(--blue-pale);
-    padding: 2.5rem 3rem;
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-  }
-  .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s, transform 0.5s;
-  }
-  .feature-item.visible { opacity: 1; transform: translateY(0); }
-  .feature-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--blue-mid);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .feature-icon svg {
-    width: 20px;
-    height: 20px;
-    fill: var(--white);
-  }
-  .feature-text strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--blue-deep);
-  }
-  .feature-text span {
-    font-size: 13px;
-    color: var(--text-muted);
-  }
+  /* Features Strip */
+  .features-strip { background: var(--blue-pale); padding: 3rem; display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+  .feature-item { display: flex; align-items: center; gap: 15px; padding: 0.5rem 1rem; border-radius: 50px; transition: all 0.3s; background: rgba(255,255,255,0.5); }
+  .feature-item:hover { transform: translateX(5px); background: var(--white); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .feature-icon { width: 50px; height: 50px; border-radius: 50%; background: var(--blue-mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feature-icon svg { width: 22px; height: 22px; fill: var(--white); }
+  .feature-text strong { display: block; font-size: 15px; font-weight: 700; color: var(--blue-deep); }
+  .feature-text span { font-size: 13px; color: var(--text-muted); }
 
-  /* ========== COMING SOON BANNER - HOME CLEANING SERVICES (FULL CONTAINER BLINK IN-OUT EFFECT) ========== */
-  .coming-soon {
-    background: linear-gradient(135deg, var(--blue-deep) 0%, #0a3480 100%);
-    margin: 2rem 3rem;
-    border-radius: 28px;
-    overflow: hidden;
-    position: relative;
-    /* FULL CONTAINER BLINK IN-OUT ANIMATION */
-    animation: containerBlinkInOut 1.2s ease-in-out infinite;
-  }
-  
-  @keyframes containerBlinkInOut {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.85;
-      transform: scale(1.01);
-    }
-  }
-  
-  .coming-soon::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,179,0,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  
-  .coming-soon-inner {
-    padding: 2.5rem 3rem;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .coming-soon-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,179,0,0.15);
-    backdrop-filter: blur(4px);
-    padding: 6px 16px;
-    border-radius: 50px;
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--gold);
-    border: 1px solid rgba(255,179,0,0.4);
-  }
-  
-  .coming-soon-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 0.5rem;
-  }
-  
-  .coming-soon-title span {
-    color: var(--gold);
-  }
-  
-  .coming-soon-desc {
-    color: rgba(255,255,255,0.8);
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-    max-width: 600px;
-  }
-  
-  .coming-soon-services {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .coming-soon-service-tag {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(4px);
-    padding: 0.5rem 1rem;
-    border-radius: 40px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--white);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  
-  .coming-soon-service-tag i {
-    color: var(--gold);
-    font-size: 0.75rem;
-  }
-  
-  .coming-soon-service-tag:hover {
-    background: rgba(255,179,0,0.25);
-    transform: translateY(-2px);
-    border-color: rgba(255,179,0,0.5);
-  }
-  
-  .coming-soon-note {
-    background: rgba(255,179,0,0.12);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0.7rem 1.5rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--gold);
-    border: 1px solid rgba(255,179,0,0.3);
-  }
-  
-  .coming-soon-note i {
-    font-size: 1rem;
-  }
+  /* Coming Soon */
+  .coming-soon { background: linear-gradient(135deg, var(--blue-deep) 0%, #0a3480 100%); margin: 2rem 3rem; border-radius: 32px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+  .coming-soon-inner { padding: 3rem; position: relative; z-index: 1; text-align: center; }
+  .coming-soon-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,179,0,0.2); padding: 8px 20px; border-radius: 50px; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 600; color: var(--gold); border: 1px solid rgba(255,179,0,0.4); }
+  .coming-soon-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; }
+  .coming-soon-title span { color: var(--gold); }
+  .coming-soon-desc { color: rgba(255,255,255,0.8); font-size: 1rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .coming-soon-services { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+  .coming-soon-service-tag { background: rgba(255,255,255,0.1); padding: 0.6rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; color: var(--white); display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.15); }
+  .coming-soon-service-tag i { color: var(--gold); }
+  .coming-soon-service-tag:hover { background: rgba(255,179,0,0.2); transform: translateY(-2px); }
+  .coming-soon-note { background: rgba(255,179,0,0.15); display: inline-flex; align-items: center; gap: 10px; padding: 0.8rem 1.8rem; border-radius: 50px; font-size: 0.9rem; font-weight: 500; color: var(--gold); border: 1px solid rgba(255,179,0,0.3); }
 
-  /* SERVICES PREVIEW */
-  .section-home { padding: 5rem 3rem; }
+  /* Services Preview */
+  .section-home { padding: 5rem 3rem; background: var(--white); }
   .section-header { text-align: center; margin-bottom: 3rem; }
-  .section-tag {
-    display: inline-block;
-    background: var(--blue-pale);
-    color: var(--blue-mid);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 14px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .section-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    color: var(--blue-deep);
-    margin-bottom: 0.8rem;
-  }
-  .section-header p {
-    color: var(--text-muted);
-    font-size: 15px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .services-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto 2.5rem;
-  }
-  .service-mini {
-    border: 1px solid var(--blue-light);
-    border-radius: 16px;
-    padding: 1.5rem 1.2rem;
-    background: var(--white);
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  .service-mini.visible { opacity: 1; transform: translateY(0); }
-  .service-mini:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px rgba(21,101,192,0.15);
-    border-color: var(--blue-bright);
-  }
-  .service-mini-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: var(--blue-pale);
-    margin: 0 auto 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-  }
-  .service-mini:hover .service-mini-icon { background: var(--blue-mid); }
-  .service-mini-icon svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--blue-mid);
-    transition: fill 0.3s;
-  }
+  .section-tag { display: inline-block; background: var(--blue-pale); color: var(--blue-mid); font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 30px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.3rem; color: var(--blue-deep); margin-bottom: 1rem; }
+  .section-header p { color: var(--text-muted); font-size: 1rem; max-width: 550px; margin: 0 auto; }
+  .services-preview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 1100px; margin: 0 auto 3rem; }
+  .service-mini { border: 1px solid var(--blue-light); border-radius: 20px; padding: 2rem 1.5rem; background: var(--white); text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; }
+  .service-mini::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--orange)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .service-mini:hover::before { transform: scaleX(1); }
+  .service-mini:hover { transform: translateY(-8px); box-shadow: 0 20px 35px rgba(21,101,192,0.12); border-color: var(--gold); }
+  .service-mini-icon { width: 65px; height: 65px; border-radius: 18px; background: var(--blue-pale); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+  .service-mini:hover .service-mini-icon { background: var(--blue-mid); transform: rotate(5deg); }
+  .service-mini-icon svg { width: 28px; height: 28px; fill: var(--blue-mid); transition: fill 0.3s; }
   .service-mini:hover .service-mini-icon svg { fill: var(--white); }
-  .service-mini h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--blue-deep);
-  }
+  .service-mini h3 { font-size: 1.1rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 0; }
   .center-btn { text-align: center; }
 
-  /* PICKUP BANNER */
-  .pickup-banner {
-    background: var(--blue-mid);
-    margin: 0 3rem;
-    border-radius: 24px;
-    padding: 3rem 3.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
-    overflow: hidden;
+  /* Testimonials with Flip Card */
+  .testimonials-section { padding: 5rem 3rem; background: linear-gradient(145deg, var(--blue-pale), #f5f9ff); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+  .testimonial-card {
+    background-color: transparent;
+    perspective: 1000px;
+    height: 280px;
+    cursor: pointer;
+  }
+  .testimonial-inner {
     position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    transform-style: preserve-3d;
   }
-  .pickup-banner::before {
-    content: '';
+  .testimonial-card:hover .testimonial-inner { transform: rotateY(180deg); }
+  .testimonial-front, .testimonial-back {
     position: absolute;
-    right: -60px;
-    top: -60px;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 24px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--white);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
   }
-  .pickup-banner::after {
-    content: '';
-    position: absolute;
-    right: 60px;
-    bottom: -80px;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-  }
-  .pickup-content h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+  .testimonial-front { z-index: 2; }
+  .testimonial-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, var(--blue-deep), var(--blue-mid));
     color: var(--white);
-    margin-bottom: 0.6rem;
   }
-  .pickup-content p {
-    color: var(--blue-light);
-    font-size: 15px;
-    max-width: 400px;
-  }
-  .pickup-badge {
-    display: inline-block;
-    margin-top: 14px;
-    background: var(--gold);
-    color: var(--blue-deep);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 7px 20px;
-    border-radius: 20px;
-  }
+  .testimonial-back p { color: rgba(255,255,255,0.9); font-style: normal; font-size: 0.9rem; margin-bottom: 1rem; }
+  .testimonial-back h4 { color: var(--gold); margin-top: 0.5rem; }
+  .testimonial-stars { color: var(--gold); margin-bottom: 1rem; font-size: 1rem; }
+  .testimonial-front p { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.2rem; font-style: italic; }
+  .testimonial-front h4 { font-weight: 700; color: var(--blue-deep); margin-bottom: 0.2rem; }
+  .testimonial-front span { font-size: 0.8rem; color: var(--text-muted); }
 
-  /* ========== REDESIGNED FOOTER WITH LOCATION & MAP DIRECTIONS ========== */
+  /* Pickup Banner */
+  .pickup-banner { background: linear-gradient(135deg, var(--blue-mid), var(--blue-deep)); margin: 0 3rem 5rem; border-radius: 32px; padding: 3.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; position: relative; overflow: hidden; }
+  .pickup-banner::before { content: ''; position: absolute; right: -80px; top: -80px; width: 250px; height: 250px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  .pickup-content h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white); margin-bottom: 0.8rem; }
+  .pickup-content p { color: var(--blue-light); font-size: 1rem; max-width: 450px; line-height: 1.6; }
+  .pickup-badge { display: inline-block; margin-top: 1rem; background: var(--gold); color: var(--blue-deep); font-size: 0.85rem; font-weight: 700; padding: 8px 24px; border-radius: 40px; }
+
+  /* FOOTER - MATCHING SERVICES PAGE EXACTLY */
   .footer {
     background: var(--text-dark);
     color: rgba(255,255,255,0.6);
@@ -726,7 +278,6 @@
     margin: 0 auto;
   }
   
-  /* Footer Location Section */
   .footer-location {
     text-align: center;
     margin-bottom: 2rem;
@@ -834,121 +385,48 @@
     text-decoration: underline;
   }
 
-  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
-
-  /* ========== RESPONSIVE: nav links always visible + INCREASED LOGO SIZE ON MOBILE ========== */
-  @media (max-width: 992px) {
-    .hero-stats { gap: 2rem; }
-    .features-strip { gap: 2rem; padding: 2rem 2rem; }
-  }
+  /* Back to Top */
+  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; background: var(--gold); color: var(--blue-deep); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+  .back-to-top.show { opacity: 1; visibility: visible; }
+  .back-to-top:hover { transform: translateY(-3px); background: var(--orange); color: var(--white); }
 
   @media (max-width: 768px) {
-    nav { padding: 0 1.2rem; }
-    .nav-logo-img { height: 42px; max-width: 140px; }
-    .nav-links { gap: 4px; }
-    .nav-links a { padding: 6px 10px; font-size: 12px; }
-    .nav-cta { padding: 6px 14px; font-size: 12px; }
-    .hero { padding: calc(var(--nav-h) + 2rem) 1.2rem 3rem; }
-    .hero-headline { font-size: clamp(1.8rem, 5vw, 2.6rem); min-height: 110px; line-height: 1.2; }
-    .hero-sub { font-size: 0.9rem; max-width: 90%; }
-    .hero-btns .btn-primary, .hero-btns .btn-outline { padding: 10px 22px; font-size: 13px; }
-    .hero-stats .stat-num { font-size: 1.8rem; }
-    .features-strip { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 1.8rem 1.5rem; gap: 1.5rem; }
-    .feature-item { flex: 0 1 auto; min-width: 160px; justify-content: center; }
-    .coming-soon { margin: 2rem 1.2rem; }
-    .coming-soon-inner { padding: 1.8rem; }
-    .coming-soon-title { font-size: 1.5rem; }
-    .coming-soon-desc { font-size: 0.9rem; }
-    .coming-soon-service-tag { font-size: 0.75rem; padding: 0.45rem 0.9rem; }
-    .section-home { padding: 3rem 1.5rem; }
-    .section-header h2 { font-size: 1.8rem; }
-    .services-preview-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-    .pickup-banner { margin: 0 1.2rem; padding: 2rem 1.8rem; flex-direction: column; text-align: center; }
-    .pickup-content h2 { font-size: 1.7rem; }
-    .pickup-content p { max-width: 100%; font-size: 0.9rem; }
-    .pickup-banner .btn-primary { margin-top: 0.5rem; display: inline-block; }
-    .footer { padding: 2rem 1.5rem; }
-    .footer-links { gap: 1.2rem; }
-    .footer-links a { font-size: 12px; }
-    /* INCREASED LOGO SIZE ON TABLET */
-    .splash-logo img { width: 300px; max-width: 70vw; }
-    .splash-text { font-size: 1.2rem; }
-  }
-
-  @media (max-width: 640px) {
-    .nav-links { display: flex !important; gap: 4px; }
+    nav { padding: 0 1rem; }
     .nav-links a { padding: 5px 8px; font-size: 11px; }
-    nav { padding: 0 0.8rem; }
-    .nav-logo-img { height: 38px; max-width: 130px; }
-    .nav-cta { padding: 5px 12px; font-size: 11px; }
-    .hero {
-      min-height: 55vh;
-      padding: calc(var(--nav-h) + 1rem) 1rem 1.8rem;
-    }
-    .hero-headline { min-height: auto; }
-    .hero-wave svg { height: 40px; }
-    .coming-soon { margin: 1.5rem 1rem; border-radius: 20px; }
-    .coming-soon-inner { padding: 1.2rem; }
-    .coming-soon-title { font-size: 1.3rem; }
-    .coming-soon-desc { font-size: 0.8rem; margin-bottom: 1rem; }
-    .coming-soon-service-tag { font-size: 0.65rem; padding: 0.35rem 0.7rem; gap: 5px; }
-    .coming-soon-service-tag i { font-size: 0.65rem; }
-    .coming-soon-note { font-size: 0.7rem; padding: 0.5rem 1rem; }
-    .footer { padding: 1.5rem 1rem; }
-    .footer-links { flex-wrap: wrap; gap: 1rem; }
-    .social-icons { gap: 1rem; }
-    .social-icons a { width: 36px; height: 36px; font-size: 1rem; }
-    .footer-location span { font-size: 0.75rem; }
-    .footer-directions-btn { font-size: 0.75rem; padding: 6px 16px; }
-    /* INCREASED LOGO SIZE ON MOBILE - MATCHING DESKTOP SIZE */
-    .splash-logo img { width: 280px; max-width: 80vw; }
+    .nav-cta { padding: 6px 14px; font-size: 12px; }
+    .hero { padding: calc(var(--nav-h) + 1.5rem) 1rem 2rem; min-height: 80vh; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-card::after { display: none; }
+    .features-strip { padding: 1.5rem; gap: 1rem; }
+    .coming-soon { margin: 1rem; }
+    .coming-soon-inner { padding: 1.5rem; }
+    .section-home { padding: 2rem 1rem; }
+    .services-preview-grid { gap: 15px; }
+    .testimonials-section { padding: 2rem 1rem; }
+    .testimonial-card { height: 320px; }
+    .pickup-banner { margin: 0 1rem 2rem; padding: 1.5rem; text-align: center; }
+    .footer { padding: 2rem 1rem; }
+    .footer-container { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; }
+    .social-icons { justify-content: center; }
+    .footer-links a { display: inline-block; margin: 0 0.5rem; }
   }
-
-  @media (max-width: 480px) {
-    .services-preview-grid { grid-template-columns: 1fr; max-width: 260px; margin-left: auto; margin-right: auto; }
-    .nav-links a { padding: 4px 6px; font-size: 9px; }
-    .nav-cta { font-size: 9px; padding: 4px 10px; }
-    .nav-logo-img { height: 34px; max-width: 120px; }
-    .coming-soon-services { gap: 0.5rem; }
-    .coming-soon-title { font-size: 1.2rem; }
-    .coming-soon-badge { font-size: 0.7rem; padding: 4px 12px; }
-    /* INCREASED LOGO SIZE ON SMALL MOBILE */
-    .splash-logo img { width: 260px; max-width: 85vw; }
-    .splash-text { font-size: 1rem; }
-  }
-  
-  .typewriter-text em { color: var(--gold); }
-  .static-clean { color: var(--white); }
 </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN (PRELOADER ANIMATION) -->
+<div class="progress-bar" id="progressBar"></div>
+<div class="custom-cursor"></div>
+<div class="custom-cursor-follower"></div>
+
 <div class="splash-screen" id="splashScreen">
-  <div class="splash-logo">
-    <img src="images/Logo6.png" alt="Spin & Sparkle Laundromat">
-  </div>
+  <div class="splash-logo"><img src="images/Logo6.png" alt="Spin & Sparkle Laundromat"></div>
   <div class="splash-text">Spin & Sparkle</div>
-  <div class="splash-dots">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+  <div class="splash-dots"><span></span><span></span><span></span></div>
 </div>
 
-<!-- MAIN WEBSITE CONTENT -->
 <div class="main-content" id="mainContent">
   <nav>
-    <a class="nav-logo" href="index.html">
-      <img class="nav-logo-img" src="images/Logo6.png" alt="Spin & Sparkle Laundromat Logo" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.nav-logo-fallback').style.display='flex';">
-      <div class="nav-logo-fallback" style="display: none; align-items: center; gap: 10px;">
-        <div class="nav-logo-icon" style="display: flex; width: 36px; height: 36px; background: var(--gold); border-radius: 50%; align-items: center; justify-content: center;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--blue-deep)"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg>
-        </div>
-        <span class="nav-logo-text" style="display: inline; font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black);">Spin <span style="color:var(--gold);">&</span> Sparkle</span>
-      </div>
-    </a>
+    <a class="nav-logo" href="index.html"><img class="nav-logo-img" src="images/Logo6.png" alt="Logo"></a>
     <ul class="nav-links">
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="services.html">Services</a></li>
@@ -956,117 +434,68 @@
       <li><a href="pickup.html">Pickup</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a href="contact.html" class="nav-cta">Book Now</a>
+    <a href="contact.html" class="nav-cta">Book Now →</a>
   </nav>
 
   <section class="hero">
-    <div class="hero-bubbles">
-      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
-      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
-      <div class="bubble"></div><div class="bubble"></div>
+    <div class="hero-bubbles"><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div></div>
+    <div class="hero-badge" data-aos="fade-down"><span class="hero-badge-dot"></span> Nairobi's Trusted Laundromat</div>
+    <div class="hero-headline" id="dynamicHeadline" data-aos="fade-up"><span class="static-clean">Fresh, Clean &amp; </span><span class="typewriter-text"><em></em></span><span class="cursor">|</span></div>
+    <p class="hero-sub" data-aos="fade-up" data-aos-delay="100">Professional laundry, dry cleaning &amp; specialist cleaning — all delivered right to your door at no extra charge.</p>
+    <div class="hero-btns" data-aos="fade-up" data-aos-delay="200"><a href="contact.html" class="btn-primary">Book a Pickup</a><a href="services.html" class="btn-outline">View All Services</a></div>
+    <div class="hero-stats" data-aos="zoom-in" data-aos-delay="300">
+      <div class="stat-card"><span class="stat-num" id="stat1">0</span><span class="stat-label">Services offered</span></div>
+      <div class="stat-card"><span class="stat-num" id="stat2">0</span><span class="stat-label">Free delivery</span></div>
+      <div class="stat-card"><span class="stat-num" id="stat3">0</span><span class="stat-label">Quick turnaround</span></div>
     </div>
-    <div class="hero-badge"><span class="hero-badge-dot"></span> Nairobi's Trusted Laundromat</div>
-    <div class="hero-headline" id="dynamicHeadline">
-      <span class="static-clean">Fresh, Clean &amp; </span>
-      <span class="typewriter-text"><em></em></span>
-      <span class="cursor">|</span>
-    </div>
-    <p class="hero-sub">Professional laundry, dry cleaning &amp; specialist cleaning — all delivered right to your door at no extra charge.</p>
-    <div class="hero-btns">
-      <a href="contact.html" class="btn-primary">Book a Pickup</a>
-      <a href="services.html" class="btn-outline">View All Services</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Services offered</div></div>
-      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free delivery</div></div>
-      <div class="stat"><div class="stat-num">24h</div><div class="stat-label">Quick turnaround</div></div>
-    </div>
-    <div class="hero-wave">
-      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="80">
-        <path d="M0,40 C360,80 1080,0 1440,50 L1440,80 L0,80 Z" fill="#ffffff"/>
-      </svg>
-    </div>
+    <div class="hero-wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" width="100%" height="80"><path d="M0,40 C360,80 1080,0 1440,50 L1440,80 L0,80 Z" fill="#ffffff"/></svg></div>
   </section>
 
   <div class="features-strip">
-    <div class="feature-item">
-      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 15c-.83 0-1.5-.67-1.5-1.5S5.67 12 6.5 12s1.5.67 1.5 1.5S7.33 15 6.5 15zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 10l1.5-4.5h11L19 10H5z"/></svg></div>
-      <div class="feature-text"><strong>Free Pickup</strong><span>We come to you</span></div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
-      <div class="feature-text"><strong>Fast Turnaround</strong><span>Ready within 24h</span></div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
-      <div class="feature-text"><strong>Quality Guaranteed</strong><span>Professional care</span></div>
-    </div>
+    <div class="feature-item" data-aos="fade-right"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M18.92 5.01C18.72 4.42 18.16 4 17.5 4h-11c-.66 0-1.21.42-1.42 1.01L3 11v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99z"/></svg></div><div class="feature-text"><strong>Free Pickup</strong><span>We come to you</span></div></div>
+    <div class="feature-item" data-aos="fade-up"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div><div class="feature-text"><strong>Fast Turnaround</strong><span>Ready within 24h</span></div></div>
+    <div class="feature-item" data-aos="fade-left"><div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="feature-text"><strong>Quality Guaranteed</strong><span>Professional care</span></div></div>
   </div>
 
-  <!-- COMING SOON SECTION - HOME CLEANING SERVICES (FULL CONTAINER BLINK IN-OUT EFFECT) -->
-  <div class="coming-soon">
+  <div class="coming-soon" data-aos="flip-up">
     <div class="coming-soon-inner">
-      <div class="coming-soon-badge">
-        <i class="fas fa-rocket"></i> 🚀 Coming Soon
-      </div>
+      <div class="coming-soon-badge"><i class="fas fa-rocket"></i> Coming Soon</div>
       <h2 class="coming-soon-title">Introducing <span>Home Cleaning Services</span></h2>
-      <p class="coming-soon-desc">We're expanding our expertise beyond laundry to transform your entire living space. Get ready for professional home cleaning tailored to your needs.</p>
-      <div class="coming-soon-services">
-        <span class="coming-soon-service-tag"><i class="fas fa-building"></i> Post-Construction Cleaning</span>
-        <span class="coming-soon-service-tag"><i class="fas fa-home"></i> Move-In Cleaning</span>
-        <span class="coming-soon-service-tag"><i class="fas fa-truck-moving"></i> Move-Out Cleaning</span>
-        <span class="coming-soon-service-tag"><i class="fas fa-calendar-alt"></i> Regular Cleaning</span>
-        <span class="coming-soon-service-tag"><i class="fas fa-broom"></i> Deep Cleaning</span>
-        <span class="coming-soon-service-tag"><i class="fas fa-star"></i> One-Time Cleaning</span>
-      </div>
-      <div class="coming-soon-note">
-        <i class="fas fa-bell"></i> Stay tuned — Launching soon! Be the first to know.
-      </div>
+      <p class="coming-soon-desc">We're expanding our expertise beyond laundry to transform your entire living space.</p>
+      <div class="coming-soon-services"><span class="coming-soon-service-tag"><i class="fas fa-building"></i> Post-Construction</span><span class="coming-soon-service-tag"><i class="fas fa-home"></i> Move-In/Out</span><span class="coming-soon-service-tag"><i class="fas fa-calendar-alt"></i> Regular</span><span class="coming-soon-service-tag"><i class="fas fa-broom"></i> Deep Cleaning</span><span class="coming-soon-service-tag"><i class="fas fa-star"></i> One-Time</span></div>
+      <div class="coming-soon-note"><i class="fas fa-bell"></i> Launching soon! Be the first to know.</div>
     </div>
   </div>
 
   <section class="section-home">
-    <div class="section-header">
-      <span class="section-tag">What we offer</span>
-      <h2>Our Cleaning Services</h2>
-      <p>From everyday laundry to specialist items — we handle it all with care.</p>
-    </div>
+    <div class="section-header" data-aos="fade-down"><span class="section-tag">What we offer</span><h2>Our Cleaning Services</h2><p>From everyday laundry to specialist items — handled with care.</p></div>
     <div class="services-preview-grid">
-      <div class="service-mini">
-        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg></div>
-        <h3>Wash &amp; Fold</h3>
-      </div>
-      <div class="service-mini">
-        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-8 7.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
-        <h3>Dry Cleaning</h3>
-      </div>
-      <div class="service-mini">
-        <div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M3 17v2h18v-2H3zm4-3l2-2-2-2-1 1-3-3 1-1-2-2-2 2 2 2 1-1 3 3-1 1 2 2 1-1zm10 0l2-2-2-2-1 1-3-3 1-1-2-2-2 2 2 2 1-1 3 3-1 1 2 2 1-1z"/></svg></div>
-        <h3>Carpet Cleaning</h3>
-      </div>
+      <div class="service-mini" data-aos="zoom-in"><div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M18 2.01L6 2c-1.1 0-2 .89-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.11-.9-1.99-2-1.99z"/></svg></div><h3>Wash &amp; Fold</h3></div>
+      <div class="service-mini" data-aos="zoom-in" data-aos-delay="100"><div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z"/></svg></div><h3>Dry Cleaning</h3></div>
+      <div class="service-mini" data-aos="zoom-in" data-aos-delay="200"><div class="service-mini-icon"><svg viewBox="0 0 24 24"><path d="M3 17v2h18v-2H3zm4-3l2-2-2-2-1 1-3-3 1-1-2-2-2 2 2 2 1-1 3 3-1 1 2 2 1-1z"/></svg></div><h3>Carpet Cleaning</h3></div>
     </div>
-    <div class="center-btn">
-      <a href="services.html" class="btn-primary">See All Our Services</a>
+    <div class="center-btn" data-aos="fade-up"><a href="services.html" class="btn-primary">See All Services →</a></div>
+  </section>
+
+  <section class="testimonials-section" data-aos="fade-up">
+    <div class="section-header"><span class="section-tag">Customer Love</span><h2>What Our Clients Say</h2><p>Hover or tap on cards to see more</p></div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card"><div class="testimonial-inner"><div class="testimonial-front"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p>"Absolutely love their service! My clothes always come back fresh and perfectly folded."</p><h4>Sarah M.</h4><span>Verified Customer</span></div><div class="testimonial-back"><i class="fas fa-quote-left" style="font-size: 2rem; opacity: 0.3; margin-bottom: 1rem;"></i><p>"I've been using Spin & Sparkle for 6 months now. Their attention to detail and punctuality is unmatched. Highly recommended!"</p><h4>⭐ 5 Star Review</h4></div></div></div>
+      <div class="testimonial-card"><div class="testimonial-inner"><div class="testimonial-front"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p>"Professional, punctual, and affordable. The dry cleaning service is excellent!"</p><h4>James K.</h4><span>Regular Customer</span></div><div class="testimonial-back"><i class="fas fa-quote-left" style="font-size: 2rem; opacity: 0.3; margin-bottom: 1rem;"></i><p>"They saved my expensive suit before an important interview. The stain removal magic is real! Forever grateful."</p><h4>⭐ 5 Star Review</h4></div></div></div>
+      <div class="testimonial-card"><div class="testimonial-inner"><div class="testimonial-front"><div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p>"The 24-hour turnaround is incredible! Highly recommend Spin & Sparkle."</p><h4>Mary W.</h4><span>Busy Professional</span></div><div class="testimonial-back"><i class="fas fa-quote-left" style="font-size: 2rem; opacity: 0.3; margin-bottom: 1rem;"></i><p>"As a working mom, I don't have time for laundry. Their free pickup/delivery service has been a lifesaver. Thank you!"</p><h4>⭐ 5 Star Review</h4></div></div></div>
     </div>
   </section>
 
-  <section style="padding: 0 0 5rem;">
-    <div class="pickup-banner">
-      <div class="pickup-content">
-        <h2>Free Pickup &amp; Delivery</h2>
-        <p>We come to your door, collect your laundry, clean it to perfection and return it fresh. Zero extra charges — ever.</p>
-        <div class="pickup-badge">100% Free — No hidden fees</div>
-      </div>
-      <a href="pickup.html" class="btn-primary" style="position:relative;z-index:1;">How It Works</a>
-    </div>
-  </section>
+  <div class="pickup-banner" data-aos="zoom-in">
+    <div class="pickup-content"><h2>Free Pickup &amp; Delivery</h2><p>We come to your door, collect your laundry, clean it to perfection and return it fresh. Zero extra charges — ever.</p><div class="pickup-badge">100% Free — No hidden fees</div></div>
+    <a href="pickup.html" class="btn-primary">How It Works →</a>
+  </div>
 
-  <!-- REDESIGNED FOOTER WITH LOCATION & DIRECTIONS -->
+  <!-- FOOTER - MATCHING SERVICES PAGE EXACTLY -->
   <footer class="footer">
     <div class="footer-container">
-      <!-- Location and Directions Section -->
       <div class="footer-location">
-        <strong>Spin &amp; Sparkle Laundromat</strong>
+        <strong>📍 Spin &amp; Sparkle Laundromat</strong>
         <span>Stelly Business Center, next to Uthiru ACK Girls, Along Waiyaki Way - Nairobi</span>
         <a href="https://maps.google.com/?q=Stelly+Business+Center+Uthiru+Nairobi" target="_blank" class="footer-directions-btn">
           <i class="fas fa-map-marker-alt"></i> Get Directions on Google Maps
@@ -1082,79 +511,101 @@
       </div>
       
       <div class="social-icons">
-        <a href="https://facebook.com/spinandsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://instagram.com/spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-        <a href="https://tiktok.com/@spin_sparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
-        <a href="https://twitter.com/spinnsparkle254" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-        <a href="https://wa.me/c/254713779425" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://facebook.com/spinandsparkle254" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/spin_sparkle254" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://tiktok.com/@spin_sparkle254" target="_blank"><i class="fab fa-tiktok"></i></a>
+        <a href="https://twitter.com/spinnsparkle254" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/c/254713779425" target="_blank"><i class="fab fa-whatsapp"></i></a>
       </div>
       
       <div class="footer-copyright">
-        <p>&copy; 2026 Spin &amp; Sparkle Laundromat — <a href="tel:0713779425">0713 779 425</a> | Designed by <a href="https://sites.google.com/view/vincentimbosaeportfolio/home" target="_blank" rel="noopener noreferrer">Clark Digital Hub</a></p>
+        <p>&copy; 2026 Spin &amp; Sparkle Laundromat — <a href="tel:0713779425">0713 779 425</a> | Designed by <a href="https://sites.google.com/view/vincentimbosaeportfolio/home" target="_blank">Clark Digital Hub</a></p>
       </div>
     </div>
   </footer>
 </div>
 
+<div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.css"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  // SPLASH SCREEN LOGIC - Show logo animation before loading main content
+  AOS.init({ duration: 800, once: true, offset: 50 });
+  
+  // Splash Screen
   window.addEventListener('load', function() {
     const splash = document.getElementById('splashScreen');
     const mainContent = document.getElementById('mainContent');
-    
-    // Ensure splash is visible for at least 1.5 seconds for smooth animation
-    setTimeout(function() {
-      splash.classList.add('hide');
-      mainContent.classList.add('reveal');
-      
-      // Remove splash from DOM after transition to free up resources
-      setTimeout(function() {
-        splash.style.display = 'none';
-      }, 800);
-    }, 1800); // 1.8 seconds of splash animation
+    setTimeout(() => { splash.classList.add('hide'); mainContent.classList.add('reveal'); setTimeout(() => splash.style.display = 'none', 800); }, 1800);
   });
   
-  // Intersection Observer for feature items and service cards
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
-      }
+  // Progress Bar
+  window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+  });
+  
+  // Custom Cursor
+  const cursor = document.querySelector('.custom-cursor');
+  const follower = document.querySelector('.custom-cursor-follower');
+  if (window.innerWidth > 768) {
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+      follower.style.transform = `translate(${e.clientX - 15}px, ${e.clientY - 15}px)`;
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.feature-item, .service-mini').forEach((el, i) => {
-    el.dataset.delay = i * 100;
-    observer.observe(el);
-  });
+    document.querySelectorAll('a, button, .btn-primary, .nav-cta, .testimonial-card').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.5)'; follower.style.transform = 'scale(1.5)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; follower.style.transform = 'scale(1)'; });
+    });
+  }
   
-  // TYPING EFFECT
+  // Counting Animation
+  function startCounters() {
+    const counters = [
+      { element: document.getElementById('stat1'), target: 10, suffix: '+' },
+      { element: document.getElementById('stat2'), target: 100, suffix: '%' },
+      { element: document.getElementById('stat3'), target: 24, suffix: 'h' }
+    ];
+    counters.forEach(counter => {
+      let current = 0;
+      const duration = 2000;
+      const stepTime = 20;
+      const steps = counter.target / (duration / stepTime);
+      const interval = setInterval(() => {
+        current += steps;
+        if (current >= counter.target) { counter.element.textContent = counter.target + counter.suffix; clearInterval(interval); } 
+        else { counter.element.textContent = Math.floor(current) + counter.suffix; }
+      }, stepTime);
+    });
+  }
+  const statsObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { startCounters(); statsObserver.unobserve(entry.target); } }); }, { threshold: 0.3 });
+  const statsSection = document.querySelector('.hero-stats');
+  if (statsSection) statsObserver.observe(statsSection);
+  
+  // Typing Effect
   const words = ["Sparkling", "Radiant", "Immaculate", "Fresh"];
   let wordIndex = 0, charIndex = 0, isDeleting = false;
   const typewriterSpan = document.querySelector('.typewriter-text em');
   function typeEffect() {
     if (!typewriterSpan) return;
     const currentWord = words[wordIndex];
-    if (isDeleting) {
-      typewriterSpan.textContent = currentWord.substring(0, charIndex - 1);
-      charIndex--;
-    } else {
-      typewriterSpan.textContent = currentWord.substring(0, charIndex + 1);
-      charIndex++;
-    }
-    if (!isDeleting && charIndex === currentWord.length) {
-      isDeleting = true;
-      setTimeout(typeEffect, 2000);
-      return;
-    }
-    if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      setTimeout(typeEffect, 400);
-      return;
-    }
+    if (isDeleting) typewriterSpan.textContent = currentWord.substring(0, charIndex - 1), charIndex--;
+    else typewriterSpan.textContent = currentWord.substring(0, charIndex + 1), charIndex++;
+    if (!isDeleting && charIndex === currentWord.length) { isDeleting = true; setTimeout(typeEffect, 2000); return; }
+    if (isDeleting && charIndex === 0) { isDeleting = false; wordIndex = (wordIndex + 1) % words.length; setTimeout(typeEffect, 400); return; }
     setTimeout(typeEffect, isDeleting ? 60 : 120);
   }
   setTimeout(() => { if(typewriterSpan) typeEffect(); }, 600);
+  
+  // Back to Top
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => { backToTop.classList.toggle('show', window.scrollY > 300); });
+  backToTop.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  
+  // Navbar Scroll Effect
+  window.addEventListener('scroll', () => { document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50); });
 </script>
 </body>
 </html>
