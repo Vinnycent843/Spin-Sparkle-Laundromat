@@ -6,6 +6,8 @@
 <title>Price List — Spin & Sparkle Laundromat</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- html2pdf Library for backup PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- AOS Animation Library -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
@@ -200,6 +202,92 @@
   .btn-small-outline { background: transparent; border: 1.5px solid var(--blue-mid); color: var(--blue-mid); padding: 0.7rem 1.5rem; border-radius: 40px; text-decoration: none; font-weight: 500; font-size: 0.85rem; transition: all 0.2s; }
   .btn-small-outline:hover { background: var(--gold); border-color: var(--gold); color: var(--blue-deep); transform: translateY(-2px); }
 
+  /* PDF Export Styles for backup generation */
+  #pdf-export-content {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    width: 1000px;
+    background: white;
+    padding: 40px;
+    font-family: 'DM Sans', sans-serif;
+    z-index: -1;
+  }
+  
+  #pdf-export-content .pdf-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #FFB300;
+    padding-bottom: 20px;
+  }
+  
+  #pdf-export-content .pdf-header img {
+    max-width: 150px;
+    margin-bottom: 15px;
+  }
+  
+  #pdf-export-content .pdf-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #0D47A1;
+    font-size: 28px;
+    margin: 10px 0;
+  }
+  
+  #pdf-export-content .pdf-header p {
+    color: #546E7A;
+    font-size: 14px;
+  }
+  
+  #pdf-export-content .pdf-section {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+  }
+  
+  #pdf-export-content .pdf-section h2 {
+    font-family: 'Playfair Display', serif;
+    color: #0D47A1;
+    font-size: 20px;
+    border-left: 4px solid #FFB300;
+    padding-left: 12px;
+    margin-bottom: 15px;
+  }
+  
+  #pdf-export-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  
+  #pdf-export-content th, #pdf-export-content td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  
+  #pdf-export-content th {
+    background: #E3F2FD;
+    color: #0D47A1;
+    font-weight: 600;
+  }
+  
+  #pdf-export-content .pdf-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #546E7A;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+  }
+  
+  #pdf-export-content .pdf-note {
+    background: #E3F2FD;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 12px;
+    text-align: center;
+  }
+
   /* ========== FOOTER - MATCHING HOMEPAGE EXACTLY ========== */
   .footer {
     background: var(--text-dark);
@@ -389,6 +477,22 @@
   <div class="splash-dots"><span></span><span></span><span></span></div>
 </div>
 
+<!-- Hidden PDF Export Content (Backup) -->
+<div id="pdf-export-content">
+  <div class="pdf-header">
+    <img src="images/Logo6.png" alt="Spin & Sparkle" onerror="this.style.display='none'">
+    <h1>Spin & Sparkle Laundromat</h1>
+    <p>Stelly Business Center, next to Uthiru ACK Girls, Along Waiyaki Way - Nairobi</p>
+    <p>📞 0713 779 425</p>
+  </div>
+  <div id="pdf-sections-container"></div>
+  <div class="pdf-footer">
+    <p>✨ Free Pickup & Delivery — No minimum order, completely free.</p>
+    <p>*Prices are subject to 16% VAT where applicable. For bulky items or special requests, kindly inquire.</p>
+    <p>© 2026 Spin & Sparkle Laundromat — Clean Clothes, Happy Hearts!</p>
+  </div>
+</div>
+
 <!-- MAIN WEBSITE CONTENT -->
 <div class="main-content" id="mainContent">
   <nav>
@@ -416,11 +520,11 @@
     <h1>Our Price List</h1>
     <p>Affordable rates with no hidden charges — professional cleaning at fair prices.</p>
     
-    <!-- PDF DOWNLOAD BUTTON -->
+    <!-- PDF DOWNLOAD BUTTON - FIXED: Tries your PDF first, then generates from page content -->
     <div class="pdf-download" data-aos="zoom-in">
-      <a href="images/pricelist.pdf" download="Spin_Sparkle_Price_List.pdf" class="pdf-btn">
+      <button id="downloadPdfBtn" class="pdf-btn">
         <i class="fas fa-download"></i> Download Price List (PDF)
-      </a>
+      </button>
     </div>
     
     <div class="page-hero-wave">
@@ -600,6 +704,87 @@
   renderPriceGrid(specialItems, 'special-grid');
   renderPriceGrid(homeBedding, 'home-grid');
   renderPriceGrid(monthlyPackages, 'packages-grid');
+
+  // ========== PDF DOWNLOAD - FIXED FOR GITHUB PAGES ==========
+  // This function generates a PDF from the webpage data (RELIABLE on GitHub Pages)
+  function generatePDFFromPageData() {
+    const pdfContainer = document.getElementById('pdf-sections-container');
+    pdfContainer.innerHTML = '';
+    
+    const sections = [
+      { title: "🧺 Laundry Services", items: laundryItems },
+      { title: "👔 Special Items & Garments", items: specialItems },
+      { title: "🛏️ Home & Bedding", items: homeBedding },
+      { title: "📦 Monthly Packages (7KG per load)", items: monthlyPackages }
+    ];
+    
+    sections.forEach(section => {
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'pdf-section';
+      sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+      
+      const table = document.createElement('table');
+      let tableHTML = `<thead><tr><th>Service Item</th><th>Price (KES)</th></tr></thead><tbody>`;
+      section.items.forEach(item => {
+        tableHTML += `<tr><td>${item.name}</td><td>${item.price}</td></tr>`;
+      });
+      tableHTML += `</tbody>`;
+      table.innerHTML = tableHTML;
+      
+      sectionDiv.appendChild(table);
+      pdfContainer.appendChild(sectionDiv);
+    });
+    
+    const noteDiv = document.createElement('div');
+    noteDiv.className = 'pdf-note';
+    noteDiv.innerHTML = `
+      <p><strong>✨ Free Pickup & Delivery</strong> — No minimum order, completely free.</p>
+      <p>*Prices are subject to 16% VAT where applicable. For bulky items or special requests, kindly inquire.</p>
+      <p>📞 Contact us: 0713 779 425</p>
+    `;
+    pdfContainer.appendChild(noteDiv);
+    
+    const element = document.getElementById('pdf-export-content');
+    const opt = {
+      margin: [0.5, 0.5, 0.5, 0.5],
+      filename: 'Spin_Sparkle_Price_List.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, letterRendering: true, useCORS: true, logging: false },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(element).save();
+  }
+
+  // Try to download existing PDF first, fallback to generated PDF
+  function downloadPDF() {
+    const pdfPath = 'images/pricelist.pdf';
+    
+    fetch(pdfPath, { method: 'HEAD' })
+      .then(response => {
+        if (response.ok) {
+          // PDF exists! Download it directly
+          const link = document.createElement('a');
+          link.href = pdfPath;
+          link.download = 'Spin_Sparkle_Price_List.pdf';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          // PDF not found, generate from page data
+          console.log('PDF file not found at ' + pdfPath + ', generating from page data...');
+          generatePDFFromPageData();
+        }
+      })
+      .catch(() => {
+        // PDF not found or fetch failed, generate from page data
+        console.log('Could not access PDF file, generating from page data...');
+        generatePDFFromPageData();
+      });
+  }
+
+  // Attach PDF download event
+  document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
 
   // Intersection Observer for price cards
   const observer = new IntersectionObserver((entries) => {
