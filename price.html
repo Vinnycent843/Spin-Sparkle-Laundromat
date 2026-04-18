@@ -520,7 +520,7 @@
     <h1>Our Price List</h1>
     <p>Affordable rates with no hidden charges — professional cleaning at fair prices.</p>
     
-    <!-- PDF DOWNLOAD BUTTON - FIXED: Tries your PDF first, then generates from page content -->
+    <!-- PDF DOWNLOAD BUTTON - FIXED FOR GITHUB PAGES -->
     <div class="pdf-download" data-aos="zoom-in">
       <button id="downloadPdfBtn" class="pdf-btn">
         <i class="fas fa-download"></i> Download Price List (PDF)
@@ -706,7 +706,8 @@
   renderPriceGrid(monthlyPackages, 'packages-grid');
 
   // ========== PDF DOWNLOAD - FIXED FOR GITHUB PAGES ==========
-  // This function generates a PDF from the webpage data (RELIABLE on GitHub Pages)
+  // This tries MULTIPLE possible paths for your PDF file
+  
   function generatePDFFromPageData() {
     const pdfContainer = document.getElementById('pdf-sections-container');
     pdfContainer.innerHTML = '';
@@ -756,35 +757,65 @@
     html2pdf().set(opt).from(element).save();
   }
 
-  // Try to download existing PDF first, fallback to generated PDF
+  // Try multiple possible paths for the PDF file (handles case sensitivity and different folder structures)
   function downloadPDF() {
-    const pdfPath = 'images/pricelist.pdf';
+    // List of possible paths to try (in order of most likely)
+    const possiblePaths = [
+      'images/pricelist.pdf',      // Original lowercase
+      'images/PriceList.pdf',      // Capital P
+      'images/priceList.pdf',      // Capital L
+      'images/Pricelist.pdf',      // Capital P only
+      'pricelist.pdf',             // Root directory
+      './pricelist.pdf',           // Root with ./
+      'PriceList.pdf',             // Root capital
+      '/images/pricelist.pdf',     // Absolute path
+    ];
     
-    fetch(pdfPath, { method: 'HEAD' })
-      .then(response => {
-        if (response.ok) {
-          // PDF exists! Download it directly
-          const link = document.createElement('a');
-          link.href = pdfPath;
-          link.download = 'Spin_Sparkle_Price_List.pdf';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } else {
-          // PDF not found, generate from page data
-          console.log('PDF file not found at ' + pdfPath + ', generating from page data...');
-          generatePDFFromPageData();
-        }
-      })
-      .catch(() => {
-        // PDF not found or fetch failed, generate from page data
-        console.log('Could not access PDF file, generating from page data...');
+    let currentIndex = 0;
+    
+    function tryNextPath() {
+      if (currentIndex >= possiblePaths.length) {
+        // All paths failed, generate PDF from page data
+        console.log('PDF file not found at any path, generating from page data...');
         generatePDFFromPageData();
-      });
+        return;
+      }
+      
+      const pdfPath = possiblePaths[currentIndex];
+      console.log('Trying to find PDF at:', pdfPath);
+      
+      fetch(pdfPath, { method: 'HEAD', cache: 'no-store' })
+        .then(response => {
+          if (response.ok) {
+            // PDF found! Download it
+            console.log('PDF found at:', pdfPath);
+            const link = document.createElement('a');
+            link.href = pdfPath;
+            link.download = 'Spin_Sparkle_Price_List.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            // Try next path
+            currentIndex++;
+            tryNextPath();
+          }
+        })
+        .catch(() => {
+          // Fetch failed, try next path
+          currentIndex++;
+          tryNextPath();
+        });
+    }
+    
+    tryNextPath();
   }
 
   // Attach PDF download event
-  document.getElementById('downloadPdfBtn').addEventListener('click', downloadPDF);
+  const downloadBtn = document.getElementById('downloadPdfBtn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', downloadPDF);
+  }
 
   // Intersection Observer for price cards
   const observer = new IntersectionObserver((entries) => {
